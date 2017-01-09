@@ -49,12 +49,10 @@ public class WorldController extends InputAdapter {
         if(Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
             ship.update(-ship.VELOCITY * delta, 0);
         }
+        if(Gdx.input.isKeyPressed(Keys.R)) {
+            Vector2 v = resolutionChanger.next();
+            Gdx.graphics.setWindowedMode((int)v.x, (int)v.y);
+        }
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector2 v = resolutionChanger.next();
-        Gdx.graphics.setWindowedMode((int)v.x, (int)v.y);
-        return true;
-    }
 }
