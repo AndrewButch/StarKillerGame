@@ -13,8 +13,7 @@ public class DebugRenderer implements Disposable {
     private ShapeRenderer shapeRenderer;
     private boolean drawGrid;
     private Color color = new Color(Color.DARK_GRAY);
-    private int colSize;
-    private int rowSize;
+
 
 
 
@@ -23,8 +22,8 @@ public class DebugRenderer implements Disposable {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(matrix4);
         this.drawGrid = drawGrid;
-        this.colSize = Gdx.graphics.getHeight() / (int)Constants.VIEWPORT_HEIGHT;
-        this.rowSize = Gdx.graphics.getWidth() / (int)Constants.VIEWPORT_WIDTH;
+        Gdx.app.debug("DEBUG RENDER:", Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
+
 
     }
 
@@ -36,13 +35,14 @@ public class DebugRenderer implements Disposable {
         if(drawGrid == true) {
             shapeRenderer.setColor(color);
             shapeRenderer.begin(ShapeType.Line);
+
             //вертикальные линии
-            for(int i = 0; i <= (int)Constants.VIEWPORT_WIDTH; i++){
-                shapeRenderer.line(i , 0,  i , Constants.VIEWPORT_HEIGHT);
+            for(float i = Constants.VIEWPORT_LEFT; i <= Constants.VIEWPORT_RIGHT; i++){
+                shapeRenderer.line(i , 0,  i , Constants.VIEWPORT_HEIGHT );
             }
             //горизонатльные линии
-            for (int j = 0; j <= (int)Constants.VIEWPORT_HEIGHT; j++) {
-                shapeRenderer.line(0, j ,  Constants.VIEWPORT_WIDTH,  j );
+            for (float j = 0; j <= Constants.VIEWPORT_HEIGHT; j++) {
+                shapeRenderer.line(Constants.VIEWPORT_LEFT, j , Constants.VIEWPORT_RIGHT ,  j );
             }
             shapeRenderer.end();
         }

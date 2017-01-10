@@ -42,11 +42,11 @@ public class TestTriangle {
 
         if (axisX != 0) {
             sprite.translateX(axisX);
-            if (sprite.getX() > Constants.VIEWPORT_WIDTH - sprite.getWidth() * 0.5f){
-                sprite.setX(Constants.VIEWPORT_WIDTH - sprite.getWidth() * 0.5f);
+            if (sprite.getX() > Constants.VIEWPORT_RIGHT - sprite.getWidth() * 0.5f){
+                sprite.setX(Constants.VIEWPORT_RIGHT - sprite.getWidth() * 0.5f);
             }
-            if (sprite.getX() <  sprite.getWidth() * 0.5f) {
-                sprite.setX(sprite.getWidth() * 0.5f);
+            if (sprite.getX() <  Constants.VIEWPORT_LEFT + sprite.getWidth() * 0.5f) {
+                sprite.setX(Constants.VIEWPORT_LEFT + sprite.getWidth() * 0.5f);
             }
         }
         if (axisY != 0) {
