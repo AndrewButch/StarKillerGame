@@ -3,6 +3,7 @@ package com.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.game.Objects.TestBackground;
 import com.game.Utils.DebugRenderer;
 
 public class WorldRenderer implements Disposable{
@@ -19,6 +21,7 @@ public class WorldRenderer implements Disposable{
     private SpriteBatch batch;
     private WorldController controller;
     private DebugRenderer debugRenderer;
+    private TestBackground testBG;
 
 
     public WorldRenderer(WorldController controller) {
@@ -29,22 +32,26 @@ public class WorldRenderer implements Disposable{
     private void init(){
 
         camera = new OrthographicCamera();
-        camera.position.set(Constants.VIEWPORT_WIDTH * 0.5f, Constants.VIEWPORT_HEIGHT * 0.5f, 0);
+        camera.position.set(Constants.WIDTH_MAX * 0.5f, Constants.HEIGHT_MAX * 0.5f, 0);
+        //camera.position.set(0, 0, 0);
         camera.update();
-        viewport = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+        viewport = new FillViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+
         viewport.apply();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         debugRenderer = new DebugRenderer(camera.combined, true);
+        testBG = new TestBackground(new Texture(Gdx.files.internal("testBackground.png")));
 
         //Gdx.app.debug(TAG, "Init Viewport: " + camera.viewportWidth + "/" + camera.viewportHeight);
     }
 
     public void render() {
-        debugRenderer.drawGrid();
         batch.begin();
+        testBG.draw(batch);
         controller.ship.draw(batch);
         batch.end();
+        debugRenderer.drawGrid();
     }
 
     public void resize(int width, int height){
@@ -57,7 +64,10 @@ public class WorldRenderer implements Disposable{
     @Override
     public void dispose() {
         batch.dispose();
+        debugRenderer.dispose();
 
     }
+
+
 
 }
