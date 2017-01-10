@@ -6,29 +6,30 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 
 public class ResolutionChanger {
     private static int id = 1;
-    ArrayList<Vector2> resolutions;
+    LinkedList<Vector2> resolutions;
     Map<String, Vector2> res;
 
 
     public ResolutionChanger() {
-        resolutions = new ArrayList<Vector2>();
+        resolutions = new LinkedList<Vector2>();
         resolutions.add(new Vector2(1080, 1920));
+        resolutions.add(new Vector2(1152, 1920));
         resolutions.add(new Vector2(1200, 1920));
-        resolutions.add(new Vector2(768, 1024));
-        resolutions.add(new Vector2(640, 960));
-        resolutions.add(new Vector2(480, 800));
+        resolutions.add(new Vector2(1280, 1920));
+        resolutions.add(new Vector2(1440, 1920));
         res = new HashMap<String, Vector2>();
         res.put("16:9",new Vector2(1080, 1920));
-        res.put("16:10",new Vector2(1200, 1920));
-        res.put("4:3",new Vector2(768, 1024));
-        res.put("3:2",new Vector2(640, 960));
         res.put("5:3",new Vector2(480, 800));
+        res.put("16:10",new Vector2(1200, 1920));
+        res.put("3:2",new Vector2(640, 960));
+        res.put("4:3",new Vector2(768, 1024));
     }
 
     public Vector2 next() {

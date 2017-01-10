@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -33,9 +34,12 @@ public class WorldRenderer implements Disposable{
 
         camera = new OrthographicCamera();
         camera.position.set(Constants.WIDTH_MAX * 0.5f, Constants.HEIGHT_MAX * 0.5f, 0);
-        //camera.position.set(0, 0, 0);
+        Gdx.app.debug(TAG, "Camera at: " + camera.position.x + "/" + camera.position.y);
         camera.update();
-        viewport = new FillViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+        //viewport = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+        viewport = new FillViewport(Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
+        //viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
+         //      Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
 
         viewport.apply();
         batch = new SpriteBatch();
@@ -55,10 +59,12 @@ public class WorldRenderer implements Disposable{
     }
 
     public void resize(int width, int height){
-        //camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
+        camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
+       // camera.update();
        // Gdx.app.debug(TAG, "Resize Viewport: " + camera.viewportWidth + "/" + camera.viewportHeight);
         viewport.update(width, height);
-        Gdx.app.debug(TAG, "New viewport: " + width + "/" + height + "\t" + "ratio: " + (float)height/width);
+        Gdx.app.debug(TAG, "New viewport: " + width * 2  + "/" + height * 2 +
+                    "\t" + "ratio: " + (float)height/width);
     }
 
     @Override

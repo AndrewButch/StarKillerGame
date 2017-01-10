@@ -17,6 +17,7 @@ public class TestBackground extends Sprite{
                 0, 0,
                 0, 0,
                 Constants.WIDTH_MAX, Constants.HEIGHT_MAX,
+                //5, 5,
                 1, 1,
                 0.0f,
                 getRegionX(), getRegionY(),

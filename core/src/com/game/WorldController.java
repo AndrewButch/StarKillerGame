@@ -22,7 +22,7 @@ public class WorldController extends InputAdapter {
 
     private void init(){
         ship = new TestTriangle(
-                (int)(Constants.VIEWPORT_WIDTH * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f),
+                (int)(Constants.WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f),
                 1, 1);
 
         resolutionChanger = new ResolutionChanger();
