@@ -10,32 +10,17 @@ import com.game.Constants;
 public class TestTriangle {
     public static final String TAG = TestTriangle.class.getSimpleName();
     public static final float VELOCITY = 5.0f;
-    int width = 32;
-    int height = 32;
     private Sprite sprite;
-    private Pixmap pixmap;
     private Texture texture;
-    private boolean moveUp = false;
-    private int moveCount = 0;
 
     public TestTriangle(int posX, int posY, float sizeX, float sizeY) {
-        pixmap = createPixmap(width, height);
-        texture = new Texture(pixmap);
-
+        texture = new Texture(Gdx.files.internal("SpaceShip.png"));
         sprite = new Sprite(texture);
         sprite.setSize(sizeX, sizeY);
         sprite.setOrigin(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f);
         sprite.setPosition(posX, posY);
-        Gdx.app.debug(TAG, "\n\tPosistion " + sprite.getX() + "/" + sprite.getY() +
-                "\n\tSize " + sprite.getWidth() + "/" + sprite.getHeight());
-    }
-
-    private Pixmap createPixmap(int width, int height) {
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        pixmap.setColor(1, 0, 0, 1);
-        //pixmap.fill();
-        pixmap.fillTriangle(0, height, width , height, width/2, 0);
-        return pixmap;
+        /*Gdx.app.debug(TAG, "\n\tPosistion " + sprite.getX() + "/" + sprite.getY() +
+                "\n\tSize " + sprite.getWidth() + "/" + sprite.getHeight());*/
     }
 
     public void update(float axisY, float axisX){

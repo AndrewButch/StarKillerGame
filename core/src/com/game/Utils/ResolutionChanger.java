@@ -1,7 +1,9 @@
 package com.game.Utils;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ArrayMap;
 
 
 import java.util.ArrayList;
@@ -12,29 +14,25 @@ import java.util.Set;
 
 
 public class ResolutionChanger {
+    private static final String TAG = ResolutionChanger.class.getSimpleName();
     private static int id = 1;
-    LinkedList<Vector2> resolutions;
-    Map<String, Vector2> res;
+    ArrayMap<String, Vector2> res;
 
 
     public ResolutionChanger() {
-        resolutions = new LinkedList<Vector2>();
-        resolutions.add(new Vector2(1080, 1920));
-        resolutions.add(new Vector2(1152, 1920));
-        resolutions.add(new Vector2(1200, 1920));
-        resolutions.add(new Vector2(1280, 1920));
-        resolutions.add(new Vector2(1440, 1920));
-        res = new HashMap<String, Vector2>();
+        res = new ArrayMap<String, Vector2>();
         res.put("16:9",new Vector2(1080, 1920));
-        res.put("5:3",new Vector2(480, 800));
+        res.put("5:3",new Vector2(1152, 1920));
         res.put("16:10",new Vector2(1200, 1920));
-        res.put("3:2",new Vector2(640, 960));
-        res.put("4:3",new Vector2(768, 1024));
+        res.put("3:2",new Vector2(1280, 1920));
+        res.put("4:3",new Vector2(1440, 1920));
     }
 
     public Vector2 next() {
-       Vector2 resol = new Vector2( resolutions.get(id));
-        id = (id + 1) % resolutions.size();
+
+       Vector2 resol = new Vector2( res.getValueAt(id));
+        Gdx.app.debug(TAG, res.getKeyAt(id) + " (" + (int)resol.x + "/" + (int)resol.y + ")");
+        id = (id + 1) % res.size;
         resol.scl(0.5f);
         return resol;
     }

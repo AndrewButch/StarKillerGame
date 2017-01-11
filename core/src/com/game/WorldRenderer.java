@@ -35,17 +35,13 @@ public class WorldRenderer implements Disposable{
         camera = new OrthographicCamera();
         camera.position.set(Constants.WIDTH_MAX * 0.5f, Constants.HEIGHT_MAX * 0.5f, 0);
         Gdx.app.debug(TAG, "Camera at: " + camera.position.x + "/" + camera.position.y);
-        camera.update();
-        //viewport = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
+        //camera.update();
         viewport = new FillViewport(Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
-        //viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
-         //      Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
-
         viewport.apply();
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         debugRenderer = new DebugRenderer(camera.combined, true);
-        testBG = new TestBackground(new Texture(Gdx.files.internal("testBackground.png")));
+        testBG = new TestBackground(new Texture(Gdx.files.internal("testBackgroundGrey.png")));
 
         //Gdx.app.debug(TAG, "Init Viewport: " + camera.viewportWidth + "/" + camera.viewportHeight);
     }
@@ -59,12 +55,9 @@ public class WorldRenderer implements Disposable{
     }
 
     public void resize(int width, int height){
-        camera.viewportWidth = (Constants.VIEWPORT_HEIGHT / height) * width;
-       // camera.update();
-       // Gdx.app.debug(TAG, "Resize Viewport: " + camera.viewportWidth + "/" + camera.viewportHeight);
         viewport.update(width, height);
-        Gdx.app.debug(TAG, "New viewport: " + width * 2  + "/" + height * 2 +
-                    "\t" + "ratio: " + (float)height/width);
+        /*Gdx.app.debug(TAG, "New viewport: " + width * 2  + "/" + height * 2 +
+                    "\t" + "ratio: " + (float)height/width);*/
     }
 
     @Override
@@ -73,6 +66,8 @@ public class WorldRenderer implements Disposable{
         debugRenderer.dispose();
 
     }
+
+
 
 
 
