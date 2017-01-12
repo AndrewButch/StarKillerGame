@@ -33,31 +33,35 @@ public class WorldRenderer implements Disposable{
     private void init(){
 
         camera = new OrthographicCamera();
-        camera.position.set(Constants.WIDTH_MAX * 0.5f, Constants.HEIGHT_MAX * 0.5f, 0);
-        Gdx.app.debug(TAG, "Camera at: " + camera.position.x + "/" + camera.position.y);
-        //camera.update();
         viewport = new FillViewport(Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
-        viewport.apply();
+        /*viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
+               Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);*/
+        viewport.apply(true);
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
-        debugRenderer = new DebugRenderer(camera.combined, true);
+        debugRenderer = new DebugRenderer(camera.combined);
         testBG = new TestBackground(new Texture(Gdx.files.internal("testBackgroundGrey.png")));
-
-        //Gdx.app.debug(TAG, "Init Viewport: " + camera.viewportWidth + "/" + camera.viewportHeight);
+        viewport.getScreenHeight();
     }
 
     public void render() {
         batch.begin();
         testBG.draw(batch);
         controller.ship.draw(batch);
+        for(int i = 0; i < controller.enemies.size(); i++) {
+            controller.enemies.get(i).draw(batch);
+        }
+
         batch.end();
         debugRenderer.drawGrid();
     }
 
     public void resize(int width, int height){
         viewport.update(width, height);
-        /*Gdx.app.debug(TAG, "New viewport: " + width * 2  + "/" + height * 2 +
-                    "\t" + "ratio: " + (float)height/width);*/
+        /*Gdx.app.debug(TAG, "\n\tScreenWidth/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
+                "\n\tWorldWidth/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
+                "\n\tScreenX/Y: " + viewport.getScreenX() + "/" + viewport.getScreenY());
+        Gdx.app.debug(TAG, "Camera at: " + camera.position.x + "/" + camera.position.y);*/
     }
 
     @Override

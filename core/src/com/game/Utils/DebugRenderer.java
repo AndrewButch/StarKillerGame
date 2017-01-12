@@ -11,20 +11,14 @@ import com.game.Constants;
 
 public class DebugRenderer implements Disposable {
     private ShapeRenderer shapeRenderer;
-    private boolean drawGrid;
+    private static boolean drawGrid = false;
     private Color color = new Color(Color.DARK_GRAY);
 
 
-
-
-
-    public DebugRenderer(Matrix4 matrix4, boolean drawGrid) {
+    public DebugRenderer(Matrix4 matrix4) {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(matrix4);
-        this.drawGrid = drawGrid;
         Gdx.app.debug("DEBUG RENDER:", Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
-
-
     }
 
     public void setColor(Color color){
@@ -32,25 +26,33 @@ public class DebugRenderer implements Disposable {
     }
 
     public void drawGrid() {
-        if(drawGrid == true) {
+        if(drawGrid) {
             shapeRenderer.setColor(color);
             shapeRenderer.begin(ShapeType.Line);
 
             //вертикальные линии
-            for(float i = Constants.VIEWPORT_LEFT; i <= Constants.VIEWPORT_RIGHT; i++){
-                shapeRenderer.line(i , 0,  i , Constants.VIEWPORT_HEIGHT );
+            for (float i = Constants.VIEWPORT_LEFT; i <= Constants.VIEWPORT_RIGHT; i++) {
+                shapeRenderer.line(i, 0, i, Constants.VIEWPORT_HEIGHT);
             }
             //горизонатльные линии
             for (float j = 0; j <= Constants.VIEWPORT_HEIGHT; j++) {
-                shapeRenderer.line(Constants.VIEWPORT_LEFT, j , Constants.VIEWPORT_RIGHT ,  j );
+                shapeRenderer.line(Constants.VIEWPORT_LEFT, j, Constants.VIEWPORT_RIGHT, j);
             }
+
             shapeRenderer.end();
         }
-
     }
 
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+    }
+
+    public static boolean isGridEnable() {
+        return drawGrid;
+    }
+
+    public static void enableGrid(boolean drawGrid) {
+        DebugRenderer.drawGrid = drawGrid;
     }
 }

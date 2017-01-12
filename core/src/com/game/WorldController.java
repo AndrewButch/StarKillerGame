@@ -5,15 +5,23 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
+import com.game.Objects.Enemy;
 import com.game.Objects.TestTriangle;
+import com.game.Utils.DebugRenderer;
 import com.game.Utils.ResolutionChanger;
+
+import java.util.ArrayList;
 
 public class WorldController extends InputAdapter {
 
     private static final String TAG = WorldController.class.getSimpleName();
     public TestTriangle ship;
     private ResolutionChanger resolutionChanger;
+    public ArrayList<Enemy> enemies;
+    private Vector2 touchPos;
+    private ParticleEffect effect;
 
     public WorldController(){
         Gdx.input.setInputProcessor(this);
@@ -24,14 +32,21 @@ public class WorldController extends InputAdapter {
         ship = new TestTriangle(
                 (int)(Constants.WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f),
                 1.36f, 1.5f);
-
+        touchPos = new Vector2();
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("stars.particle"), Gdx.files.internal("star.png"));
         resolutionChanger = new ResolutionChanger();
-
+        enemies = new ArrayList<Enemy>(10);
+        for (int i = 0; i < 10; i++) {
+            enemies.add(new Enemy());
+        }
     }
 
     public void update(float delta){
        handleControl(delta);
-        //ship.update(delta);
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).update(delta);
+        }
     }
 
     private void handleControl(float delta){
@@ -55,4 +70,21 @@ public class WorldController extends InputAdapter {
         }
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Keys.G) {
+            if(DebugRenderer.isGridEnable()){
+                DebugRenderer.enableGrid(false);
+            } else {
+                DebugRenderer.enableGrid(true);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        return true;
+    }
 }
