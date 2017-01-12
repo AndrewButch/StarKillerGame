@@ -34,7 +34,7 @@ public class WorldController extends InputAdapter {
                 1.36f, 1.5f);
         touchPos = new Vector2();
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("stars.particle"), Gdx.files.internal("star.png"));
+        effect.load(Gdx.files.internal("stars.particle"), Gdx.files.internal(""));
         resolutionChanger = new ResolutionChanger();
         enemies = new ArrayList<Enemy>(10);
         for (int i = 0; i < 10; i++) {
