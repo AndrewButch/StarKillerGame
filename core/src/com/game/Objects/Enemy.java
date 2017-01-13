@@ -15,10 +15,12 @@ import com.game.Constants;
 public class Enemy extends AbstractGameObject implements Disposable {
     private static final Texture texture = new Texture(Gdx.files.internal("SpaceShip.png"));
     private static final float VELOCITY = 3.0f;
+
     private Rectangle boundingBox;
     private Color color =  Color.RED;
     private EnemyType type = EnemyType.NORMAL;
     private Vector2 velocity;
+
 
     @Override
     public void dispose() {
@@ -53,8 +55,7 @@ public class Enemy extends AbstractGameObject implements Disposable {
 
     @Override
     public void update(float delta) {
-        if (getY() >= 0)
-            translateY(-velocity.y * delta);
+        translateY(-velocity.y * delta);
     }
 
     @Override

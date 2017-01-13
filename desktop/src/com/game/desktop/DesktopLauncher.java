@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		System.setProperty("user.name","seconduser");
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1080/2;
-		config.height = 1920/2;
+		config.width = 1080/3;
+		config.height = 1920/3;
 		//config.width = 1440/2;
 		//config.height = 1920/2;
 		new LwjglApplication(new Main(), config);

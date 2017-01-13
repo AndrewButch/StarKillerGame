@@ -18,7 +18,7 @@ public class DebugRenderer implements Disposable {
     public DebugRenderer(Matrix4 matrix4) {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(matrix4);
-        Gdx.app.debug("DEBUG RENDER:", Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
+        //Gdx.app.debug("DEBUG RENDER:", Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
     }
 
     public void setColor(Color color){
