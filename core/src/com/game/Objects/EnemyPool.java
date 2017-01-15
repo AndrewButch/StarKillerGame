@@ -19,4 +19,5 @@ public class EnemyPool extends Pool<Enemy> {
     protected Enemy newObject() {
         return new Enemy();
     }
+
 }

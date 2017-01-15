@@ -22,7 +22,7 @@ public class WorldRenderer implements Disposable{
     private SpriteBatch batch;
     private WorldController controller;
     private DebugRenderer debugRenderer;
-    private TestBackground testBG;
+
 
 
     public WorldRenderer(WorldController controller) {
@@ -40,16 +40,19 @@ public class WorldRenderer implements Disposable{
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         debugRenderer = new DebugRenderer(camera.combined);
-        testBG = new TestBackground(new Texture(Gdx.files.internal("testBackgroundGrey.png")));
+
         viewport.getScreenHeight();
     }
 
     public void render() {
         batch.begin();
-        testBG.draw(batch);
+        controller.testBG.draw(batch);
         controller.ship.draw(batch);
         for(int i = 0; i < controller.enemies.size(); i++) {
             controller.enemies.get(i).draw(batch);
+        }
+        for(int i = 0; i < controller.shoots.size(); i++) {
+            controller.shoots.get(i).draw(batch);
         }
 
         batch.end();

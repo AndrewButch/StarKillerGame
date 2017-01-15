@@ -20,6 +20,5 @@ public abstract class AbstractGameObject extends Sprite {
     }
 
     public abstract void update(float delta);
-    public abstract void init();
 
 }
