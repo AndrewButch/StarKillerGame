@@ -3,6 +3,7 @@ package com.game;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -67,16 +68,15 @@ public class WorldController extends InputAdapter implements Disposable{
     public void update(float delta){
         //Gdx.app.debug(TAG, "Delta!" + delta);
         if(delta >= 0.05f ) delta = 0.05f;
-       handleControl(delta);
+        handleControl(delta);
         phoneControl(delta);
         currentEnemyTime += delta;
         currentShootTime += delta;
-        //add new enemy
         testBG.update(delta);
-        if (currentEnemyTime >= newEnemyTime /*&& enemies.size() < 10*/) {
+        //add new enemy
+        if (currentEnemyTime >= newEnemyTime) {
             currentEnemyTime = 0.0f;
             enemies.addLast(enemyPool.obtain());
-
         }
         //update enemies
         if(!enemies.isEmpty()) {
@@ -94,6 +94,7 @@ public class WorldController extends InputAdapter implements Disposable{
 
             }
         }
+        //update shoots
         if (!shoots.isEmpty()) {
             for (int i = 0; i < shoots.size(); i++) {
                 currentShoot = shoots.get(i);
@@ -104,6 +105,20 @@ public class WorldController extends InputAdapter implements Disposable{
                             "\tPool free: " + shootPool.getFree());
                     shoots.remove(currentShoot);
                     shootPool.free(currentShoot);
+                    continue;
+                }
+                //check collision with enemy
+                for (int j = 0; j < enemies.size(); j++) {
+                    currentEnemy = enemies.get(j);
+                    if (currentShoot.getY() >= currentEnemy.getY() ) {
+                        if (currentShoot.overlap(currentEnemy.getBoundingRectangle())) {
+                            shoots.remove(currentShoot);
+                            shootPool.free(currentShoot);
+                            enemies.remove(currentEnemy);
+                            currentEnemy.reset();
+                            enemyPool.free(currentEnemy);
+                        }
+                    }
                 }
             }
         }
@@ -127,13 +142,22 @@ public class WorldController extends InputAdapter implements Disposable{
         if(Gdx.input.isKeyPressed(Keys.SPACE) && currentShootTime >= ship.SHOOT_RELOAD) {
             currentShootTime = 0.0f;
             shoot();
-
         }
+
     }
     private void phoneControl(float delta) {
         if(Gdx.input.isTouched() && currentShootTime >= ship.SHOOT_RELOAD) {
             currentShootTime = 0.0f;
             shoot();
+        }
+        if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
+            float amount = Gdx.input.getAccelerometerX() / 10.0f;
+            amount *= 90.0f;
+            if (Math.abs(amount) < 5.0f) {
+                amount = 0;
+            }
+            amount /= 10;
+            ship.update(0, -ship.VELOCITY * amount * delta);
         }
     }
 
@@ -153,12 +177,6 @@ public class WorldController extends InputAdapter implements Disposable{
         return true;
     }
 
-//    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        shoot();
-//        return true;
-//    }
-
     @Override
     public void dispose() {
         for (int i = 0; i < enemies.size(); i++) {
@@ -173,6 +191,7 @@ public class WorldController extends InputAdapter implements Disposable{
     private void shoot() {
         currentShoot = shootPool.obtain();
         currentShoot.setPosition(ship.getX(), ship.getY());
+        currentShoot.setBoundingCircle(ship.getX(), ship.getY(), Shoot.RADIUS);
         Gdx.app.debug("Shoot", "#" + currentShoot.getId() +
                      " position (" + currentShoot.getX() + "/" + currentShoot.getY() + ")" );
         shoots.addLast(currentShoot);
