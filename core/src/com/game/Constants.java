@@ -10,4 +10,6 @@ public class Constants {
     public static float VIEWPORT_LEFT = (WIDTH_MAX - VIEWPORT_WIDTH) * 0.5f;
     public static float VIEWPORT_RIGHT = VIEWPORT_LEFT + VIEWPORT_WIDTH;
 
+    public static final String TEXTURE_ATLAS = "OutputAtlas/atlas.atlas";
+
 }
