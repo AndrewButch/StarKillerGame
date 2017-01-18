@@ -188,8 +188,8 @@ public class WorldController extends InputAdapter implements Disposable{
         currentShoot = shootPool.obtain();
         currentShoot.setPosition(ship.getX(), ship.getY());
         currentShoot.setBoundingCircle(ship.getX(), ship.getY(), Shoot.RADIUS);
-        Gdx.app.debug("Shoot", "#" + currentShoot.getId() +
-                     " position (" + currentShoot.getX() + "/" + currentShoot.getY() + ")" );
+//        Gdx.app.debug("Shoot", "#" + currentShoot.getId() +
+//                     " position (" + currentShoot.getX() + "/" + currentShoot.getY() + ")" );
         shoots.addLast(currentShoot);
     }
 }

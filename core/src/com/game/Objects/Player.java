@@ -26,8 +26,8 @@ public class Player {
         sprite.setSize(PLAYER_WIDTH, PLAYER_HEIGHT);
         sprite.setOrigin(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f);
         sprite.setPosition(posX, posY);
-        Gdx.app.debug(TAG, "\n\tPosistion " + sprite.getX() + "/" + sprite.getY() +
-                "\n\tSize " + sprite.getWidth() + "/" + sprite.getHeight());
+//        Gdx.app.debug(TAG, "\n\tPosistion " + sprite.getX() + "/" + sprite.getY() +
+//                "\n\tSize " + sprite.getWidth() + "/" + sprite.getHeight());
         boudnigBox = new Rectangle(
                 sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
         shootPool = new ShootPool(10, 20);

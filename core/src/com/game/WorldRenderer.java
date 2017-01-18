@@ -20,6 +20,7 @@ public class WorldRenderer implements Disposable{
     private OrthographicCamera camera;
     private OrthographicCamera cameraGUI;
     private Viewport viewport;
+    private Viewport viewportGUI;
     private SpriteBatch batch;
     private WorldController controller;
     private DebugRenderer debugRenderer;
@@ -38,7 +39,11 @@ public class WorldRenderer implements Disposable{
         /*viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
                Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);*/
         viewport.apply(true);
-        //cameraGUI = new OrthographicCamera(Constants.VIEWPORT_LEFT,)
+        cameraGUI = new OrthographicCamera();
+        cameraGUI.setToOrtho(true);
+        viewportGUI = new FillViewport(Constants.VIEWPORT_GUI_WIDTH_MAX, Constants.VIEWPORT_GUI_HEIGHT_MAX,cameraGUI);
+        viewportGUI.apply(true);
+
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         debugRenderer = new DebugRenderer(camera.combined);
@@ -63,10 +68,15 @@ public class WorldRenderer implements Disposable{
 
     public void resize(int width, int height){
         viewport.update(width, height);
-        /*Gdx.app.debug(TAG, "\n\tScreenWidth/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
-                "\n\tWorldWidth/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
-                "\n\tScreenX/Y: " + viewport.getScreenX() + "/" + viewport.getScreenY());
-        Gdx.app.debug(TAG, "Camera at: " + camera.position.x + "/" + camera.position.y);*/
+        Gdx.app.debug(TAG, "VIEWPORT" +
+                 "\n\tScreen Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
+                "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
+                "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
+        viewportGUI.update(width, height);
+        Gdx.app.debug(TAG, "GUI VIEWPORT" +
+                 "\n\tScreen Width/Height: " + viewportGUI.getScreenWidth() + "/" + viewportGUI.getScreenHeight() +
+                "\n\tWorld Width/Height: " + viewportGUI.getWorldWidth() + "/" + viewportGUI.getWorldHeight() +
+                "\n\tVieport Left/Right: " + Constants.VIEWPORT_GUI_LEFT + "/" + Constants.VIEWPORT_GUI_RIGHT);
     }
 
     @Override

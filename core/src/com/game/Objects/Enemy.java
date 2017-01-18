@@ -47,10 +47,10 @@ public class Enemy extends AbstractGameObject implements Pool.Poolable {
                 MathUtils.random(0.0f, 1.0f),
                 MathUtils.random(0.0f, 1.0f), 1);
 
-        Gdx.app.debug(  "Enemy", "#" + this.enemyId + " position(" + getX() + "/" + getY() + ")" +
-                        "\tVelocity:(" + velocity.x + "/" + velocity.y + ")" +
-                        "\tBoundingRect:(" + getBoundingRectangle().getX() + "/" + getBoundingRectangle().getY() + ")" +
-                        "(" + getBoundingRectangle().getWidth() + "/" + getBoundingRectangle().getHeight() + ")");
+//        Gdx.app.debug(  "Enemy", "#" + this.enemyId + " position(" + getX() + "/" + getY() + ")" +
+//                        "\tVelocity:(" + velocity.x + "/" + velocity.y + ")" +
+//                        "\tBoundingRect:(" + getBoundingRectangle().getX() + "/" + getBoundingRectangle().getY() + ")" +
+//                        "(" + getBoundingRectangle().getWidth() + "/" + getBoundingRectangle().getHeight() + ")");
     }
 
     @Override
