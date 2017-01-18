@@ -1,41 +1,47 @@
 package com.game.Objects;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.game.Constants;
+import com.game.Utils.Assets;
 
-public class TestBackground extends Sprite implements Disposable{
-    private static final Texture CLOUDS1 = new Texture(Gdx.files.internal("clouds1.png"));
-    private static final Texture CLOUDS2 = new Texture(Gdx.files.internal("clouds2.png"));
-    private static final Texture CLOUDS3 = new Texture(Gdx.files.internal("clouds3.png"));
-    private static final Texture SMALL_STARS = new Texture(Gdx.files.internal("small_stars.png"));
-    private static final Texture BIG_STARS = new Texture(Gdx.files.internal("big_stars.png"));
-    private final float CLOIDS_VELOCITY = 0.2f;
-    private final float SMALL_STARS_VELOCITY = 0.5f;
-    private final float BIG_STARS_VELOCITY = 1.0f;
-    public float offsetClouds = 0.0f;
-    public float offsetSmallStars = 0.0f;
-    public float offsetBigStars = 0.0f;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TestBackground extends Sprite{
+
+    private final static float CLOIDS_VELOCITY = 0.2f;
+    private final static float SMALL_STARS_VELOCITY = 0.5f;
+    private final static float BIG_STARS_VELOCITY = 1.0f;
+    private float offsetClouds = 0.0f;
+    private float offsetSmallStars = 0.0f;
+    private float offsetBigStars = 0.0f;
+    private HashMap<String, Texture> textures;
 
 
     public TestBackground() {
-        super(CLOUDS1);
+        super();
+        textures = new HashMap<String, Texture>();
+        textures.put("clouds1", Assets.instance.bg1.getTexture());
+        textures.put("clouds2", Assets.instance.bg2.getTexture());
+        textures.put("clouds3", Assets.instance.bg3.getTexture());
+        textures.put("smallStars", Assets.instance.smallStars.getTexture());
+        textures.put("bigStars",  Assets.instance.bigStars.getTexture());
     }
 
     @Override
     public void draw(Batch batch) {
-        batchDraw(batch, CLOUDS1, offsetClouds );
-        batchDraw(batch, CLOUDS2, Constants.VIEWPORT_HEIGHT + offsetClouds );
-        batchDraw(batch, CLOUDS3, 2 * Constants.VIEWPORT_HEIGHT + offsetClouds );
-        batchDraw(batch, SMALL_STARS, offsetSmallStars );
-        batchDraw(batch, SMALL_STARS, Constants.VIEWPORT_HEIGHT + offsetSmallStars );
-        batchDraw(batch, BIG_STARS, offsetBigStars );
-        batchDraw(batch, BIG_STARS, Constants.VIEWPORT_HEIGHT + offsetBigStars);
+        batchDraw(batch, Assets.instance.bg1, offsetClouds );
+        batchDraw(batch, Assets.instance.bg2, Constants.VIEWPORT_HEIGHT + offsetClouds );
+        batchDraw(batch, Assets.instance.bg3, 2 * Constants.VIEWPORT_HEIGHT + offsetClouds );
+        batchDraw(batch, Assets.instance.smallStars, offsetSmallStars );
+        batchDraw(batch, Assets.instance.smallStars, Constants.VIEWPORT_HEIGHT + offsetSmallStars );
+        batchDraw(batch, Assets.instance.bigStars, offsetBigStars );
+        batchDraw(batch, Assets.instance.bigStars, Constants.VIEWPORT_HEIGHT + offsetBigStars);
 
     }
 
@@ -53,24 +59,16 @@ public class TestBackground extends Sprite implements Disposable{
             offsetBigStars = 0.0f;
         }
     }
-    public void batchDraw(Batch batch, Texture texture, float offsetY) {
-        batch.draw(texture,
+    private void batchDraw(Batch batch, AtlasRegion region, float offsetY) {
+        batch.draw(region.getTexture(),
                 0, offsetY,
                 0, 0,
                 Constants.WIDTH_MAX, Constants.HEIGHT_MAX,
                 1, 1,
                 0.0f,
-                getRegionX(), getRegionY(),
-                getRegionWidth(), getRegionHeight(),
+                region.getRegionX(), region.getRegionY(),
+                region.getRegionWidth(), region.getRegionHeight(),
                 false, false);
     }
 
-    @Override
-    public void dispose() {
-        CLOUDS1.dispose();
-        CLOUDS2.dispose();
-        CLOUDS3.dispose();
-        SMALL_STARS.dispose();
-        BIG_STARS.dispose();
-    }
 }

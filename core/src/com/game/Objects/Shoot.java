@@ -1,17 +1,14 @@
 package com.game.Objects;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
+import com.game.Utils.Assets;
 
-public class Shoot extends AbstractGameObject implements Disposable, Pool.Poolable {
-    private static final Texture TEXTURE = new Texture(Gdx.files.internal("star.png"));
+public class Shoot extends AbstractGameObject implements Pool.Poolable {
     public static float RADIUS = 0.25f;
     public static final float VELOCITY = 7.0f;
     public static int id = 0;
@@ -20,7 +17,7 @@ public class Shoot extends AbstractGameObject implements Disposable, Pool.Poolab
     private Circle boundingCircle;
 
     public Shoot(){
-        super(TEXTURE);
+        super(Assets.instance.shoot);
         this.setSize(RADIUS * 2, RADIUS * 2);
         this.setOrigin(getWidth() * 0.5f, getHeight() * 0.5f);
         currentID = id++;
@@ -40,7 +37,7 @@ public class Shoot extends AbstractGameObject implements Disposable, Pool.Poolab
     @Override
     public void draw(Batch batch) {
         batch.setColor(getColor());
-        batch.draw(TEXTURE,
+        batch.draw(getTexture(),
                 getX() - getOriginX(), getY()- getOriginY(),
                 getOriginX(), getOriginY(),
                 getWidth(), getHeight(),
@@ -50,11 +47,6 @@ public class Shoot extends AbstractGameObject implements Disposable, Pool.Poolab
                 getRegionWidth(), getRegionHeight(),
                 false, false);
         batch.setColor(Color.WHITE);    }
-
-    @Override
-    public void dispose() {
-        TEXTURE.dispose();
-    }
 
     @Override
     public void reset() {

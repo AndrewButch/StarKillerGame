@@ -23,23 +23,21 @@ import java.util.LinkedList;
 public class WorldController extends InputAdapter implements Disposable{
 
     private static final String TAG = WorldController.class.getSimpleName();
-    private float newEnemyTime = 0.5f;
     private float currentEnemyTime = 0;
     private float currentShootTime = 0;
-    public Player ship;
-    public TestBackground testBG;
+    Player ship;
+    TestBackground testBG;
     private ResolutionChanger resolutionChanger;
-    public LinkedList<Enemy> enemies;
-    public LinkedList<Shoot> shoots;
-    private ParticleEffect effect;
-    public EnemyPool enemyPool;
-    public ShootPool shootPool;
+    LinkedList<Enemy> enemies;
+    LinkedList<Shoot> shoots;
+    private EnemyPool enemyPool;
+    private ShootPool shootPool;
 
 
-    private Enemy currentEnemy;
+
     private Shoot currentShoot;
 
-    public WorldController(){
+    WorldController(){
         Gdx.input.setInputProcessor(this);
         init();
     }
@@ -51,9 +49,6 @@ public class WorldController extends InputAdapter implements Disposable{
                 (int)(Constants.WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f));
         //background
         testBG = new TestBackground();
-        //effects
-        effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("stars.particle"), Gdx.files.internal(""));
         //enemies
         enemies = new LinkedList<Enemy>();
         enemyPool = new EnemyPool(30, 50);
@@ -65,7 +60,7 @@ public class WorldController extends InputAdapter implements Disposable{
 
     }
 
-    public void update(float delta){
+    void update(float delta){
         //Gdx.app.debug(TAG, "Delta!" + delta);
         if(delta >= 0.05f ) delta = 0.05f;
         handleControl(delta);
@@ -74,6 +69,7 @@ public class WorldController extends InputAdapter implements Disposable{
         currentShootTime += delta;
         testBG.update(delta);
         //add new enemy
+        float newEnemyTime = 0.5f;
         if (currentEnemyTime >= newEnemyTime) {
             currentEnemyTime = 0.0f;
             enemies.addLast(enemyPool.obtain());
@@ -81,7 +77,7 @@ public class WorldController extends InputAdapter implements Disposable{
         //update enemies
         if(!enemies.isEmpty()) {
             for (int i = 0; i < enemies.size(); i++) {
-                currentEnemy = enemies.get(i);
+                Enemy currentEnemy = enemies.get(i);
                 currentEnemy.update(delta);
                 if (currentEnemy.getY() <= -currentEnemy.getHeight()) {
 //                    Gdx.app.debug("Delete", "Enemy #" + currentEnemy.getId() +
@@ -109,7 +105,7 @@ public class WorldController extends InputAdapter implements Disposable{
                 }
                 //check collision with enemy
                 for (int j = 0; j < enemies.size(); j++) {
-                    currentEnemy = enemies.get(j);
+                    Enemy currentEnemy = enemies.get(j);
                     if (currentShoot.getY() >= currentEnemy.getY() ) {
                         if (currentShoot.overlap(currentEnemy.getBoundingRectangle())) {
                             shoots.remove(currentShoot);
@@ -128,36 +124,42 @@ public class WorldController extends InputAdapter implements Disposable{
         if (Gdx.app.getType() != Application.ApplicationType.Desktop)
             return;
         if(Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-            ship.update(0, -ship.VELOCITY * delta);
+            ship.update(0, -Player.VELOCITY * delta);
         }
         if(Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            ship.update(0, ship.VELOCITY * delta);
+            ship.update(0, Player.VELOCITY * delta);
         }
         if(Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) {
-            ship.update(ship.VELOCITY * delta, 0);
+            ship.update(Player.VELOCITY * delta, 0);
         }
         if(Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) {
-            ship.update(-ship.VELOCITY * delta, 0);
+            ship.update(-Player.VELOCITY * delta, 0);
         }
-        if(Gdx.input.isKeyPressed(Keys.SPACE) && currentShootTime >= ship.SHOOT_RELOAD) {
+        if(Gdx.input.isKeyPressed(Keys.SPACE) && currentShootTime >= Player.SHOOT_RELOAD) {
             currentShootTime = 0.0f;
             shoot();
         }
 
     }
     private void phoneControl(float delta) {
-        if(Gdx.input.isTouched() && currentShootTime >= ship.SHOOT_RELOAD) {
+        if(Gdx.input.isTouched() && currentShootTime >= Player.SHOOT_RELOAD) {
             currentShootTime = 0.0f;
             shoot();
         }
         if(Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer)) {
-            float amount = Gdx.input.getAccelerometerX() / 10.0f;
-            amount *= 90.0f;
-            if (Math.abs(amount) < 5.0f) {
-                amount = 0;
+            float amountX = Gdx.input.getAccelerometerX() / 10.0f;
+            float amountY = Gdx.input.getAccelerometerY() / 10.0f;
+            amountX *= 90.0f;
+            amountY *= 90.0f;
+            if (Math.abs(amountX) < 5.0f) {
+                amountX = 0;
             }
-            amount /= 10;
-            ship.update(0, -ship.VELOCITY * amount * delta);
+            if (Math.abs(amountY) < 5.0f) {
+                amountY = 0;
+            }
+            amountX /= 10;
+            amountY /= 10;
+            ship.update(-Player.VELOCITY * amountY * delta, -Player.VELOCITY * amountX * delta);
         }
     }
 
@@ -179,13 +181,7 @@ public class WorldController extends InputAdapter implements Disposable{
 
     @Override
     public void dispose() {
-        for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).dispose();
-        }
-        for (int i = 0; i < shoots.size(); i++) {
-            shoots.get(i).dispose();
-        }
-        testBG.dispose();
+
     }
 
     private void shoot() {

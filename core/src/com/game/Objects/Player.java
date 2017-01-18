@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.game.Constants;
+import com.game.Utils.Assets;
 
 public class Player {
     public static final String TAG = Player.class.getSimpleName();
@@ -18,12 +19,10 @@ public class Player {
 
     private Rectangle boudnigBox;
     private Sprite sprite;
-    private Texture texture;
     private ShootPool shootPool;
 
     public Player(int posX, int posY) {
-        texture = new Texture(Gdx.files.internal("SpaceShip.png"));
-        sprite = new Sprite(texture);
+        sprite = new Sprite(Assets.instance.player);
         sprite.setSize(PLAYER_WIDTH, PLAYER_HEIGHT);
         sprite.setOrigin(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f);
         sprite.setPosition(posX, posY);

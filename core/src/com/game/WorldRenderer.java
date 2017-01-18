@@ -18,6 +18,7 @@ import com.game.Utils.DebugRenderer;
 public class WorldRenderer implements Disposable{
     private static final String TAG = WorldRenderer.class.getSimpleName();
     private OrthographicCamera camera;
+    private OrthographicCamera cameraGUI;
     private Viewport viewport;
     private SpriteBatch batch;
     private WorldController controller;
@@ -37,6 +38,7 @@ public class WorldRenderer implements Disposable{
         /*viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
                Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);*/
         viewport.apply(true);
+        //cameraGUI = new OrthographicCamera(Constants.VIEWPORT_LEFT,)
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
         debugRenderer = new DebugRenderer(camera.combined);

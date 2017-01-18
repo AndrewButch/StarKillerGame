@@ -1,0 +1,59 @@
+
+InputTexture1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+smallStars
+  rotate: false
+  xy: 2, 2
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1
+clouds3
+  rotate: false
+  xy: 2, 484
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1
+clouds2
+  rotate: false
+  xy: 364, 2
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1
+clouds1
+  rotate: false
+  xy: 364, 484
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1
+SpaceShip
+  rotate: false
+  xy: 726, 2
+  size: 284, 313
+  orig: 284, 313
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 2, 966
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+
+InputTexture2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bigStars
+  rotate: false
+  xy: 2, 2
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1

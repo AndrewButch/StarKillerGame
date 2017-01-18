@@ -3,7 +3,9 @@ package com.game;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.game.Utils.Assets;
 
 public class Main implements ApplicationListener {
 
@@ -15,10 +17,12 @@ public class Main implements ApplicationListener {
 	public void create() {
 		//set log level
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Assets.instance.init(new AssetManager());
 
 		worldController = new WorldController();
 		worldRenderer = new WorldRenderer(worldController);
 		paused = false;
+
 	}
 
 	@Override
@@ -49,5 +53,6 @@ public class Main implements ApplicationListener {
 	@Override
 	public void dispose() {
 		worldRenderer.dispose();
+		Assets.instance.dispose();
 	}
 }

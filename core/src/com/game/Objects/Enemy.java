@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 import com.game.Constants;
+import com.game.Utils.Assets;
 
 
-public class Enemy extends AbstractGameObject implements Disposable, Pool.Poolable {
-    private static final Texture texture = new Texture(Gdx.files.internal("SpaceShip.png"));
+public class Enemy extends AbstractGameObject implements Pool.Poolable {
     private static final float VELOCITY = 3.0f;
     private static final float SIZE_X = 1.0f;
     private static final float SIZE_Y = 1.0f;
@@ -36,7 +36,7 @@ public class Enemy extends AbstractGameObject implements Disposable, Pool.Poolab
     }
     //Constructor with manual enemy position
     public Enemy(float posX, float posY){
-        super(texture);
+        super(Assets.instance.player);
         this.setPosition(posX, posY);
         this.setSize(SIZE_X, SIZE_Y);
         this.enemyId = id;
@@ -84,7 +84,7 @@ public class Enemy extends AbstractGameObject implements Disposable, Pool.Poolab
     @Override
     public void draw(Batch batch) {
         batch.setColor(getColor());
-        batch.draw(texture,
+        batch.draw(getTexture(),
                 getX(), getY(),
                 getRegionWidth() * 0.5f, getRegionHeight() * 0.5f,
                 getWidth(), getHeight(),
@@ -114,10 +114,6 @@ public class Enemy extends AbstractGameObject implements Disposable, Pool.Poolab
 //        this.velocity.set(0, VELOCITY);
     }
 
-    @Override
-    public void dispose() {
-        texture.dispose();
-    }
 
     @Override
     public void reset() {
