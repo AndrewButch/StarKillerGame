@@ -74,7 +74,7 @@ public class Assets implements Disposable, AssetErrorListener {
     }
 
 
-    private class AssetFonts {
+    public class AssetFonts {
         public final BitmapFont defaultSmall;
         public final BitmapFont defaultNormal;
         public final BitmapFont defaultBig;

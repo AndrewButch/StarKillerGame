@@ -4,12 +4,10 @@ package com.game.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.game.Constants;
 import com.game.Utils.Assets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TestBackground extends Sprite{
@@ -63,7 +61,7 @@ public class TestBackground extends Sprite{
         batch.draw(region.getTexture(),
                 0, offsetY,
                 0, 0,
-                Constants.WIDTH_MAX, Constants.HEIGHT_MAX,
+                Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX,
                 1, 1,
                 0.0f,
                 region.getRegionX(), region.getRegionY(),

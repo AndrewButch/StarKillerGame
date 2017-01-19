@@ -1,18 +1,13 @@
 package com.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.game.Objects.TestBackground;
+import com.game.Utils.Assets;
 import com.game.Utils.DebugRenderer;
 
 public class WorldRenderer implements Disposable{
@@ -35,9 +30,9 @@ public class WorldRenderer implements Disposable{
     private void init(){
 
         camera = new OrthographicCamera();
-        viewport = new FillViewport(Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);
+        viewport = new FillViewport(Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX, camera);
         /*viewport = new ExtendViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT,
-               Constants.WIDTH_MAX, Constants.HEIGHT_MAX, camera);*/
+               Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX, camera);*/
         viewport.apply(true);
         cameraGUI = new OrthographicCamera();
         cameraGUI.setToOrtho(true);
@@ -45,36 +40,28 @@ public class WorldRenderer implements Disposable{
         viewportGUI.apply(true);
 
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(camera.combined);
+
         debugRenderer = new DebugRenderer(camera.combined);
 
         viewport.getScreenHeight();
     }
 
     public void render() {
-        batch.begin();
-        controller.testBG.draw(batch);
-        controller.ship.draw(batch);
-        for(int i = 0; i < controller.enemies.size(); i++) {
-            controller.enemies.get(i).draw(batch);
-        }
-        for(int i = 0; i < controller.shoots.size(); i++) {
-            controller.shoots.get(i).draw(batch);
-        }
-
-        batch.end();
+        renderWorld(batch);
+        renderGUI(batch);
         debugRenderer.drawGrid();
     }
 
     public void resize(int width, int height){
         viewport.update(width, height);
         Gdx.app.debug(TAG, "VIEWPORT" +
-                 "\n\tScreen Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
+                 "\n\tGameViewport Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
                 "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
                 "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
         viewportGUI.update(width, height);
+        Constants.updateGUI(width, height);
         Gdx.app.debug(TAG, "GUI VIEWPORT" +
-                 "\n\tScreen Width/Height: " + viewportGUI.getScreenWidth() + "/" + viewportGUI.getScreenHeight() +
+                "\n\tGUI Width/Height: " + Constants.VIEWPORT_GUI_WIDTH + "/" + Constants.VIEWPORT_GUI_HEIGHT +
                 "\n\tWorld Width/Height: " + viewportGUI.getWorldWidth() + "/" + viewportGUI.getWorldHeight() +
                 "\n\tVieport Left/Right: " + Constants.VIEWPORT_GUI_LEFT + "/" + Constants.VIEWPORT_GUI_RIGHT);
     }
@@ -84,6 +71,60 @@ public class WorldRenderer implements Disposable{
         batch.dispose();
         debugRenderer.dispose();
 
+    }
+    private void renderWorld(SpriteBatch batch) {
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        controller.testBG.draw(batch);
+        controller.ship.draw(batch);
+        for(int i = 0; i < controller.enemies.size(); i++) {
+            controller.enemies.get(i).draw(batch);
+        }
+        for(int i = 0; i < controller.shoots.size(); i++) {
+            controller.shoots.get(i).draw(batch);
+        }
+        batch.end();
+    }
+    private void renderGUI(SpriteBatch batch) {
+        batch.setProjectionMatrix(cameraGUI.combined);
+        batch.begin();
+        if(controller.levelChange) {
+            renderNextLevelText(batch);
+        }
+        renderFPS(batch);
+        renderScore(batch);
+        batch.end();
+    }
+
+    private void renderFPS(SpriteBatch batch) {
+        float x = Constants.VIEWPORT_GUI_LEFT + 20;
+        float y = Constants.VIEWPORT_GUI_HEIGHT - 30;
+        int fps = Gdx.graphics.getFramesPerSecond();
+        BitmapFont fpsFont = Assets.instance.fonts.defaultNormal;
+        if (fps >= 45) {
+            // fps more 45 have green color
+            fpsFont.setColor(0, 1, 0, 1);
+        } else if (fps >= 30) {
+            // fps more 30 have yellow color
+            fpsFont.setColor(1, 1, 0, 1);
+        } else {
+            // fps less 30 have red color
+            fpsFont.setColor(1, 0, 0, 1);
+        }
+        fpsFont.draw(batch, "FPS: " + fps, x , y);
+        fpsFont.setColor(1, 1, 1, 1);
+    }
+
+    private void renderScore(SpriteBatch batch) {
+        float x = Constants.VIEWPORT_GUI_LEFT + 20;
+        float y = 10;
+        Assets.instance.fonts.defaultBig.draw(batch, "Score: " + controller.score, x, y);
+    }
+
+    private void renderNextLevelText(SpriteBatch batch) {
+        float x = (Constants.VIEWPORT_GUI_LEFT + Constants.VIEWPORT_GUI_RIGHT) * 0.5f;
+        float y = Constants.VIEWPORT_GUI_HEIGHT * 0.5f;
+        Assets.instance.fonts.defaultBig.draw(batch,  controller.currentLevel + " Wave", x, y);
     }
 
 

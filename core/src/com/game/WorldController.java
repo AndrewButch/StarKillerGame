@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.game.Objects.Enemy;
@@ -18,13 +17,17 @@ import com.game.Objects.TestBackground;
 import com.game.Utils.DebugRenderer;
 import com.game.Utils.ResolutionChanger;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class WorldController extends InputAdapter implements Disposable{
 
     private static final String TAG = WorldController.class.getSimpleName();
+    public static final float LEVEL_CHANGING_TIME = 5.0f;
     private float currentEnemyTime = 0;
     private float currentShootTime = 0;
+    private float currentLevelTime = 0;
+    private float changeLevel = 0;
     Player ship;
     TestBackground testBG;
     private ResolutionChanger resolutionChanger;
@@ -32,8 +35,10 @@ public class WorldController extends InputAdapter implements Disposable{
     LinkedList<Shoot> shoots;
     private EnemyPool enemyPool;
     private ShootPool shootPool;
-
-
+    public int score;
+    public int currentLevel;
+    public boolean levelChange;
+    private float[] levels;
 
     private Shoot currentShoot;
 
@@ -44,9 +49,12 @@ public class WorldController extends InputAdapter implements Disposable{
 
     private void init(){
         resolutionChanger = new ResolutionChanger();
+        levelChange = false;
         //player
         ship = new Player(
-                (int)(Constants.WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f));
+                (int)(Constants.VIEWPORT_WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f));
+        score = 0;
+
         //background
         testBG = new TestBackground();
         //enemies
@@ -56,8 +64,11 @@ public class WorldController extends InputAdapter implements Disposable{
         //shoots
         shoots = new LinkedList<Shoot>();
         shootPool = new ShootPool(10, 20);
-
-
+        levels = new float[10];
+        for (int i = 0; i < levels.length; i++) {
+            levels[i] = 5.0f * (i + 1) ;
+        }
+        currentLevel = 1;
     }
 
     void update(float delta){
@@ -65,17 +76,35 @@ public class WorldController extends InputAdapter implements Disposable{
         if(delta >= 0.05f ) delta = 0.05f;
         handleControl(delta);
         phoneControl(delta);
-        currentEnemyTime += delta;
         currentShootTime += delta;
+        currentEnemyTime += delta;
+        //Проверка смены уровня
+        if(currentLevelTime >= levels[currentLevel]) {
+            levelChange = true;
+            currentLevel = (currentLevel + 1) % 10;
+        }
+        //Пауза во время смены уровня с показом следующей волны
+        if (levelChange) {
+            changeLevel += delta;
+            if (changeLevel >= LEVEL_CHANGING_TIME) {
+                levelChange = false;
+                changeLevel = 0;
+                currentLevelTime = 0;
+            }
+        }
         testBG.update(delta);
         //add new enemy
         float newEnemyTime = 0.5f;
-        if (currentEnemyTime >= newEnemyTime) {
-            currentEnemyTime = 0.0f;
-            enemies.addLast(enemyPool.obtain());
+        if(!levelChange) {
+            currentLevelTime += delta;
+            if (currentEnemyTime >= newEnemyTime) {
+                currentEnemyTime = 0.0f;
+                enemies.addLast(enemyPool.obtain());
+            }
         }
+
         //update enemies
-        if(!enemies.isEmpty()) {
+        if (!enemies.isEmpty()) {
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy currentEnemy = enemies.get(i);
                 currentEnemy.update(delta);
@@ -96,9 +125,9 @@ public class WorldController extends InputAdapter implements Disposable{
                 currentShoot = shoots.get(i);
                 currentShoot.update(delta);
                 if (currentShoot.getY() >= Constants.VIEWPORT_HEIGHT) {
-                    Gdx.app.debug("Delete", "Shoot #" + currentShoot.getId() +
-                            "\tShot count: " + shoots.size() +
-                            "\tPool free: " + shootPool.getFree());
+//                    Gdx.app.debug("Delete", "Shoot #" + currentShoot.getId() +
+//                            "\tShot count: " + shoots.size() +
+//                            "\tPool free: " + shootPool.getFree());
                     shoots.remove(currentShoot);
                     shootPool.free(currentShoot);
                     continue;
@@ -106,13 +135,14 @@ public class WorldController extends InputAdapter implements Disposable{
                 //check collision with enemy
                 for (int j = 0; j < enemies.size(); j++) {
                     Enemy currentEnemy = enemies.get(j);
-                    if (currentShoot.getY() >= currentEnemy.getY() ) {
+                    if (currentShoot.getY() >= currentEnemy.getY()) {
                         if (currentShoot.overlap(currentEnemy.getBoundingRectangle())) {
                             shoots.remove(currentShoot);
                             shootPool.free(currentShoot);
                             enemies.remove(currentEnemy);
                             currentEnemy.reset();
                             enemyPool.free(currentEnemy);
+                            score += 100;
                         }
                     }
                 }
