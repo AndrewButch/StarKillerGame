@@ -23,7 +23,7 @@ import java.util.LinkedList;
 public class WorldController extends InputAdapter implements Disposable{
 
     private static final String TAG = WorldController.class.getSimpleName();
-    public static final float LEVEL_CHANGING_TIME = 5.0f;
+    public static final float LEVEL_CHANGING_TIME = 2.0f;
     private float currentEnemyTime = 0;
     private float currentShootTime = 0;
     private float currentLevelTime = 0;
@@ -49,7 +49,7 @@ public class WorldController extends InputAdapter implements Disposable{
 
     private void init(){
         resolutionChanger = new ResolutionChanger();
-        levelChange = false;
+        levelChange = true;
         //player
         ship = new Player(
                 (int)(Constants.VIEWPORT_WIDTH_MAX * 0.5f), (int)(Constants.VIEWPORT_HEIGHT * 0.1f));
@@ -60,13 +60,13 @@ public class WorldController extends InputAdapter implements Disposable{
         //enemies
         enemies = new LinkedList<Enemy>();
         enemyPool = new EnemyPool(30, 50);
-        enemies.addLast(enemyPool.obtain());
         //shoots
         shoots = new LinkedList<Shoot>();
         shootPool = new ShootPool(10, 20);
         levels = new float[10];
+        //Add level time
         for (int i = 0; i < levels.length; i++) {
-            levels[i] = 5.0f * (i + 1) ;
+            levels[i] = 3.0f ;
         }
         currentLevel = 1;
     }
@@ -82,14 +82,18 @@ public class WorldController extends InputAdapter implements Disposable{
         if(currentLevelTime >= levels[currentLevel]) {
             levelChange = true;
             currentLevel = (currentLevel + 1) % 10;
+            currentLevelTime = 0;
         }
         //Пауза во время смены уровня с показом следующей волны
+
         if (levelChange) {
-            changeLevel += delta;
-            if (changeLevel >= LEVEL_CHANGING_TIME) {
-                levelChange = false;
-                changeLevel = 0;
-                currentLevelTime = 0;
+            if(enemies.isEmpty()) {
+                changeLevel += delta;
+                if (changeLevel >= LEVEL_CHANGING_TIME) {
+                    levelChange = false;
+                    changeLevel = 0;
+
+                }
             }
         }
         testBG.update(delta);

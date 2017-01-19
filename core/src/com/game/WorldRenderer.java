@@ -1,9 +1,11 @@
 package com.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -66,12 +68,7 @@ public class WorldRenderer implements Disposable{
                 "\n\tVieport Left/Right: " + Constants.VIEWPORT_GUI_LEFT + "/" + Constants.VIEWPORT_GUI_RIGHT);
     }
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-        debugRenderer.dispose();
 
-    }
     private void renderWorld(SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -88,8 +85,9 @@ public class WorldRenderer implements Disposable{
     private void renderGUI(SpriteBatch batch) {
         batch.setProjectionMatrix(cameraGUI.combined);
         batch.begin();
-        if(controller.levelChange) {
+        if(controller.levelChange && controller.enemies.isEmpty()) {
             renderNextLevelText(batch);
+
         }
         renderFPS(batch);
         renderScore(batch);
@@ -124,11 +122,19 @@ public class WorldRenderer implements Disposable{
     private void renderNextLevelText(SpriteBatch batch) {
         float x = (Constants.VIEWPORT_GUI_LEFT + Constants.VIEWPORT_GUI_RIGHT) * 0.5f;
         float y = Constants.VIEWPORT_GUI_HEIGHT * 0.5f;
-        Assets.instance.fonts.defaultBig.draw(batch,  controller.currentLevel + " Wave", x, y);
+
+        BitmapFont wave = Assets.instance.fonts.defaultBig;
+        wave.setColor(Color.YELLOW);
+        wave.draw(batch,  "Wave " + controller.currentLevel , x, y, 0, Align.center, false);
     }
 
 
+    @Override
+    public void dispose() {
+        batch.dispose();
+        debugRenderer.dispose();
 
+    }
 
 
 }
