@@ -42,7 +42,7 @@ public class WorldController extends InputAdapter implements Disposable{
 
     private Shoot currentShoot;
 
-    WorldController(){
+    public WorldController(){
         Gdx.input.setInputProcessor(this);
         init();
     }
@@ -71,7 +71,7 @@ public class WorldController extends InputAdapter implements Disposable{
         currentLevel = 1;
     }
 
-    void update(float delta){
+    public void update(float delta){
         //Gdx.app.debug(TAG, "Delta!" + delta);
         if(delta >= 0.05f ) delta = 0.05f;
         handleControl(delta);
