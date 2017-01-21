@@ -45,7 +45,6 @@ public class WorldRenderer implements Disposable{
 
         debugRenderer = new DebugRenderer(camera.combined);
 
-        viewport.getScreenHeight();
     }
 
     public void render() {

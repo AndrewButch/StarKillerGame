@@ -60,7 +60,6 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void resume() {
-        super.resume();
         // Передача управления ??!?!
         paused = false;
     }

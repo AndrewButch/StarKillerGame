@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -32,9 +33,11 @@ public class Assets implements Disposable, AssetErrorListener {
     public void init(AssetManager assetManager) {
         Gdx.app.debug(TAG, "Init AssetManager");
         this.assetManager = assetManager;
+
         assetManager.setErrorListener(this);
         assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
         assetManager.finishLoading();
+
         Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
         for (String str : assetManager.getAssetNames()) {
             Gdx.app.debug(TAG, "asset: " + str);
