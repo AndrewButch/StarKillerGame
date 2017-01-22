@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.game.Screens.LoadingScreen;
+import com.game.Screens.MenuScreen;
 import com.game.Utils.Assets;
 
 public class Main extends Game {
@@ -15,6 +16,6 @@ public class Main extends Game {
 	@Override
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		setScreen(new LoadingScreen(this));
+		setScreen(new MenuScreen(this));
 	}
 }
