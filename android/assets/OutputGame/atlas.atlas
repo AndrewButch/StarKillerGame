@@ -1,58 +1,60 @@
 
-InputTexture1.png
+atlas.png
+size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-smallStars
+bigStars
   rotate: false
-  xy: 2, 2
-  size: 360, 480
-  orig: 360, 480
-  offset: 0, 0
-  index: -1
-clouds3
-  rotate: false
-  xy: 2, 484
-  size: 360, 480
-  orig: 360, 480
-  offset: 0, 0
-  index: -1
-clouds2
-  rotate: false
-  xy: 364, 2
+  xy: 10, 500
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
 clouds1
   rotate: false
-  xy: 364, 484
+  xy: 10, 10
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
-SpaceShip
+clouds2
   rotate: false
-  xy: 726, 2
-  size: 284, 313
-  orig: 284, 313
+  xy: 380, 500
+  size: 360, 480
+  orig: 360, 480
+  offset: 0, 0
+  index: -1
+clouds3
+  rotate: false
+  xy: 380, 10
+  size: 360, 480
+  orig: 360, 480
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 2, 966
+  xy: 750, 948
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 
-InputTexture2.png
+atlas2.png
+size: 1024,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-bigStars
+SpaceShip
   rotate: false
-  xy: 2, 2
+  xy: 380, 177
+  size: 284, 313
+  orig: 284, 313
+  offset: 0, 0
+  index: -1
+smallStars
+  rotate: false
+  xy: 10, 10
   size: 360, 480
   orig: 360, 480
   offset: 0, 0

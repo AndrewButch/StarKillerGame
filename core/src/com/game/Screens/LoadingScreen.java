@@ -59,13 +59,13 @@ public class LoadingScreen extends AbstractGameScreen {
 //        Gdx.app.debug(TAG, "Logo position " + logoPos.x + "/" + logoPos.y);
 //        Gdx.app.debug(TAG, "Progress bar position " + pbPos.x + "/" + pbPos.y);
 
-        manager.load("InputTexture/bigStars.png", Texture.class);
-        manager.load("InputTexture/smallStars.png", Texture.class);
-        manager.load("InputTexture/star.png", Texture.class);
-        manager.load("InputTexture/clouds1.png", Texture.class);
-        manager.load("InputTexture/clouds2.png", Texture.class);
-        manager.load("InputTexture/clouds3.png", Texture.class);
-        manager.load("InputTexture/SpaceShip.png", Texture.class);
+        manager.load("InputGame/bigStars.png", Texture.class);
+        manager.load("InputGame/smallStars.png", Texture.class);
+        manager.load("InputGame/star.png", Texture.class);
+        manager.load("InputGame/clouds1.png", Texture.class);
+        manager.load("InputGame/clouds2.png", Texture.class);
+        manager.load("InputGame/clouds3.png", Texture.class);
+        manager.load("InputGame/SpaceShip.png", Texture.class);
         manager.load("BigImg/img (1).jpg", Texture.class);
         manager.load("BigImg/img (2).jpg", Texture.class);
         manager.load("BigImg/img (3).jpg", Texture.class);
