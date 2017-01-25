@@ -17,7 +17,6 @@ import com.game.Objects.TestBackground;
 import com.game.Utils.DebugRenderer;
 import com.game.Utils.ResolutionChanger;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class WorldController extends InputAdapter implements Disposable{
