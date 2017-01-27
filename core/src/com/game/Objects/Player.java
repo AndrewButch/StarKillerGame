@@ -21,6 +21,7 @@ public class Player {
     private Sprite sprite;
     private ShootPool shootPool;
 
+
     public Player(int posX, int posY) {
         sprite = new Sprite(Assets.instance.player);
         sprite.setSize(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -66,6 +67,7 @@ public class Player {
                 sprite.getRegionX(), sprite.getRegionY(),
                 sprite.getRegionWidth(), sprite.getRegionHeight(),
                 false, false);
+
         //sprite.draw(batch);
 
     }

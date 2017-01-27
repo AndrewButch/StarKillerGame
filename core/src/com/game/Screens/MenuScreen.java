@@ -38,6 +38,9 @@ public class MenuScreen extends AbstractGameScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
+        if(Gdx.input.isTouched()) {
+            game.setScreen(new LoadingScreen(game));
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,37 +31,86 @@ public class Assets implements Disposable, AssetErrorListener {
     private Assets() {
     }
 
+    public void loadMenuAssets(AssetManager assetManager) {
+        Gdx.app.debug(TAG, "Loading menu assets");
+
+        assetManager.load(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
+        assetManager.finishLoading();
+        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
+        for (String str : assetManager.getAssetNames()) {
+            Gdx.app.debug(TAG, "asset: " + str);
+        }
+    }
+
+    public void loadBars() {
+        Gdx.app.debug(TAG, "Loading Bars assets");
+        //assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
+        assetManager.load("background.png", Texture.class);
+        assetManager.load("logo.png", Texture.class);
+        assetManager.load("progress_bar.png", Texture.class);
+        assetManager.load("progress_bar_base.png", Texture.class);
+        assetManager.finishLoading();
+        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
+        for (String str : assetManager.getAssetNames()) {
+            Gdx.app.debug(TAG, "asset: " + str);
+        }
+    }
+    public void loadGameAssets(){
+        Gdx.app.debug(TAG, "Loading Game assets");
+        assetManager.load(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
+
+        assetManager.load("BigImg/img (1).jpg", Texture.class);
+        assetManager.load("BigImg/img (2).jpg", Texture.class);
+        assetManager.load("BigImg/img (3).jpg", Texture.class);
+        assetManager.load("BigImg/img (4).jpg", Texture.class);
+        assetManager.load("BigImg/img (5).jpg", Texture.class);
+        assetManager.load("BigImg/img (6).jpg", Texture.class);
+//        assetManager.load("BigImg/img (7).jpg", Texture.class);
+//        assetManager.load("BigImg/img (8).jpg", Texture.class);
+//        assetManager.load("BigImg/img (9).jpg", Texture.class);
+//        assetManager.load("BigImg/img (10).jpg", Texture.class);
+//        assetManager.load("BigImg/img (11).jpg", Texture.class);
+        //assetManager.finishLoading();
+       // initGameTextures();
+    }
+
     public void init(AssetManager assetManager) {
         Gdx.app.debug(TAG, "Init AssetManager");
         this.assetManager = assetManager;
-
         assetManager.setErrorListener(this);
-        assetManager.load(Constants.TEXTURE_ATLAS, TextureAtlas.class);
-        assetManager.finishLoading();
-
+    }
+    // init textures after loading game assets
+    public void initGameTextures(){
         Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
         for (String str : assetManager.getAssetNames()) {
             Gdx.app.debug(TAG, "asset: " + str);
         }
 
-        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS, TextureAtlas.class);
-
-        for(Texture texture : atlas.getTextures()) {
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        }
-        Gdx.app.debug(TAG, "# of sprites loaded: " + atlas.getRegions().size);
+        if(assetManager.isLoaded(Constants.TEXTURE_ATLAS_GAME)) {
+            TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
+            for(Texture texture : atlas.getTextures()) {
+                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            }
+        Gdx.app.debug(TAG, "# Sprites from Game atlas loaded: " + atlas.getRegions().size);
         for(AtlasRegion regions : atlas.getRegions()) {
             Gdx.app.debug(TAG, "asset: " + regions.name);
         }
+            player = atlas.findRegion("SpaceShip");
+            shoot = atlas.findRegion("star");
+            bg1 = atlas.findRegion("clouds1");
+            bg2 = atlas.findRegion("clouds2");
+            bg3 = atlas.findRegion("clouds3");
+            smallStars = atlas.findRegion("smallStars");
+            bigStars = atlas.findRegion("bigStars");
+            fonts = new AssetFonts();
+        } else{
 
-        player = atlas.findRegion("SpaceShip");
-        shoot = atlas.findRegion("star");
-        bg1 = atlas.findRegion("clouds1");
-        bg2 = atlas.findRegion("clouds2");
-        bg3 = atlas.findRegion("clouds3");
-        smallStars = atlas.findRegion("smallStars");
-        bigStars = atlas.findRegion("bigStars");
-        fonts = new AssetFonts();
+            Gdx.app.debug(TAG, "Atlas not loaded");
+        }
+
+
+
+
     }
 
     @Override
@@ -96,6 +146,10 @@ public class Assets implements Disposable, AssetErrorListener {
             defaultBig.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         }
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 }
 

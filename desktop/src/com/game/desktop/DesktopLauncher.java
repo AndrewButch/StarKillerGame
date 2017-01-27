@@ -9,7 +9,7 @@ import com.game.Main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		System.setProperty("user.name","seconduser");
-		boolean rebuild = true;
+		boolean rebuild = false;
 
 		if (rebuild) {
 			TexturePacker.process("InputGame", "OutputGame", "atlas.atlas");

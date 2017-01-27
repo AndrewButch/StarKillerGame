@@ -2,7 +2,9 @@ package com.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
@@ -55,22 +57,32 @@ public class WorldRenderer implements Disposable{
 
     public void resize(int width, int height){
         viewport.update(width, height);
-        Gdx.app.debug(TAG, "VIEWPORT" +
-                 "\n\tGameViewport Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
-                "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
-                "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
+//        Gdx.app.debug(TAG, "VIEWPORT" +
+//                 "\n\tGameViewport Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
+//                "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
+//                "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
         viewportGUI.update(width, height);
         Constants.updateGUI(width, height);
-        Gdx.app.debug(TAG, "GUI VIEWPORT" +
-                "\n\tGUI Width/Height: " + Constants.VIEWPORT_GUI_WIDTH + "/" + Constants.VIEWPORT_GUI_HEIGHT +
-                "\n\tWorld Width/Height: " + viewportGUI.getWorldWidth() + "/" + viewportGUI.getWorldHeight() +
-                "\n\tVieport Left/Right: " + Constants.VIEWPORT_GUI_LEFT + "/" + Constants.VIEWPORT_GUI_RIGHT);
+//        Gdx.app.debug(TAG, "GUI VIEWPORT" +
+//                "\n\tGUI Width/Height: " + Constants.VIEWPORT_GUI_WIDTH + "/" + Constants.VIEWPORT_GUI_HEIGHT +
+//                "\n\tWorld Width/Height: " + viewportGUI.getWorldWidth() + "/" + viewportGUI.getWorldHeight() +
+//                "\n\tVieport Left/Right: " + Constants.VIEWPORT_GUI_LEFT + "/" + Constants.VIEWPORT_GUI_RIGHT);
     }
 
 
     private void renderWorld(SpriteBatch batch) {
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+//        Texture texture = new Texture(Gdx.files.internal("InputGame/SpaceShip.png"));
+//        batch.draw(texture,
+//                Constants.VIEWPORT_WIDTH_MAX * 0.5f, Constants.VIEWPORT_HEIGHT_MAX * 0.5f,
+//                0, 0,
+//                1, 1,
+//                1, 1,
+//                0,
+//                0, 0,
+//                texture.getWidth(), texture.getHeight(), false, false);
         controller.testBG.draw(batch);
         controller.ship.draw(batch);
         for(int i = 0; i < controller.enemies.size(); i++) {

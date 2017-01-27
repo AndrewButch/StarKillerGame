@@ -1,0 +1,54 @@
+
+atlas.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu_background
+  rotate: false
+  xy: 2, 2
+  size: 720, 960
+  orig: 720, 960
+  offset: 0, 0
+  index: -1
+
+atlas2.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+btn_options_down
+  rotate: false
+  xy: 2, 218
+  size: 389, 106
+  orig: 389, 106
+  offset: 0, 0
+  index: -1
+btn_options_up
+  rotate: false
+  xy: 528, 370
+  size: 389, 106
+  orig: 389, 106
+  offset: 0, 0
+  index: -1
+btn_play_down
+  rotate: false
+  xy: 2, 110
+  size: 389, 106
+  orig: 389, 106
+  offset: 0, 0
+  index: -1
+btn_play_up
+  rotate: false
+  xy: 2, 2
+  size: 389, 106
+  orig: 389, 106
+  offset: 0, 0
+  index: -1
+menu_logo
+  rotate: false
+  xy: 2, 326
+  size: 524, 150
+  orig: 524, 150
+  offset: 0, 0
+  index: -1

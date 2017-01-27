@@ -2,59 +2,59 @@
 atlas.png
 size: 1024,1024
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
+SpaceShip
+  rotate: false
+  xy: 732, 691
+  size: 284, 313
+  orig: 284, 313
+  offset: 0, 0
+  index: -1
 bigStars
   rotate: false
-  xy: 10, 500
+  xy: 4, 524
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
 clouds1
   rotate: false
-  xy: 10, 10
+  xy: 4, 40
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
 clouds2
   rotate: false
-  xy: 380, 500
+  xy: 368, 524
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
 clouds3
   rotate: false
-  xy: 380, 10
+  xy: 368, 40
   size: 360, 480
   orig: 360, 480
   offset: 0, 0
   index: -1
 star
   rotate: false
-  xy: 750, 948
+  xy: 4, 4
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 
 atlas2.png
-size: 1024,512
+size: 512,512
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
-SpaceShip
-  rotate: false
-  xy: 380, 177
-  size: 284, 313
-  orig: 284, 313
-  offset: 0, 0
-  index: -1
 smallStars
   rotate: false
-  xy: 10, 10
+  xy: 4, 4
   size: 360, 480
   orig: 360, 480
   offset: 0, 0

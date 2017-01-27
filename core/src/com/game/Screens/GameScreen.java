@@ -27,9 +27,6 @@ public class GameScreen extends AbstractGameScreen {
     public void show() {
         // Create()
         // set log level
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        Assets.instance.init(new AssetManager());
-
         worldController = new WorldController();
         worldRenderer = new WorldRenderer(worldController);
         paused = false;
@@ -55,7 +52,6 @@ public class GameScreen extends AbstractGameScreen {
     public void hide() {
         // Dispose()
         worldRenderer.dispose();
-        Assets.instance.dispose();
     }
 
     @Override

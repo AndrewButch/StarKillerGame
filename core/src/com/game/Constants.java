@@ -19,7 +19,8 @@ public class Constants {
     public static float VIEWPORT_GUI_LEFT;
     public static float VIEWPORT_GUI_RIGHT;
 
-    public static final String TEXTURE_ATLAS = "OutputGame/atlas.atlas";
+    public static final String TEXTURE_ATLAS_GAME = "OutputGame/atlas.atlas";
+    public static final String TEXTURE_ATLAS_MENU= "OutputMenu/atlas.atlas";
 
     public static void updateGUI(int width, int height) {
         // update GUI WIDTH

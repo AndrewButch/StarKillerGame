@@ -3,18 +3,15 @@ package com.game.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.Constants;
+import com.game.Utils.Assets;
 
 
 public class LoadingScreen extends AbstractGameScreen {
@@ -35,15 +32,11 @@ public class LoadingScreen extends AbstractGameScreen {
     public void show() {
         // Create()
         batch = new SpriteBatch();
-        manager = new AssetManager();
-
-        manager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        manager.load("background.png", Texture.class);
-        manager.load("logo.png", Texture.class);
-        manager.load("progress_bar.png", Texture.class);
-        manager.load("progress_bar_base.png", Texture.class);
-        manager.finishLoading();
-        Gdx.app.debug(TAG, "Assets loaded: #" + manager.getAssetNames().size);
+        manager = Assets.instance.getAssetManager();
+        // load bars
+        Assets.instance.loadBars();
+        // load game assets
+        Assets.instance.loadGameAssets();
 
         background = manager.get("background.png");
         logo = manager.get("logo.png");
@@ -58,27 +51,6 @@ public class LoadingScreen extends AbstractGameScreen {
         pbPos = new Vector2(logoPos.x, logoPos.y - 1.0f);
 //        Gdx.app.debug(TAG, "Logo position " + logoPos.x + "/" + logoPos.y);
 //        Gdx.app.debug(TAG, "Progress bar position " + pbPos.x + "/" + pbPos.y);
-
-        manager.load("InputGame/bigStars.png", Texture.class);
-        manager.load("InputGame/smallStars.png", Texture.class);
-        manager.load("InputGame/star.png", Texture.class);
-        manager.load("InputGame/clouds1.png", Texture.class);
-        manager.load("InputGame/clouds2.png", Texture.class);
-        manager.load("InputGame/clouds3.png", Texture.class);
-        manager.load("InputGame/SpaceShip.png", Texture.class);
-        manager.load("BigImg/img (1).jpg", Texture.class);
-        manager.load("BigImg/img (2).jpg", Texture.class);
-        manager.load("BigImg/img (3).jpg", Texture.class);
-        manager.load("BigImg/img (4).jpg", Texture.class);
-        manager.load("BigImg/img (5).jpg", Texture.class);
-        manager.load("BigImg/img (6).jpg", Texture.class);
-        manager.load("BigImg/img (7).jpg", Texture.class);
-        manager.load("BigImg/img (8).jpg", Texture.class);
-        manager.load("BigImg/img (9).jpg", Texture.class);
-        manager.load("BigImg/img (10).jpg", Texture.class);
-        manager.load("BigImg/img (11).jpg", Texture.class);
-
-
     }
 
     @Override
@@ -130,6 +102,7 @@ public class LoadingScreen extends AbstractGameScreen {
         batch.end();
         if(manager.update()) {
             //if (Gdx.input.isTouched()) {
+                Assets.instance.initGameTextures();
                 game.setScreen(new GameScreen(game));
             //}
 
@@ -140,10 +113,10 @@ public class LoadingScreen extends AbstractGameScreen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        Gdx.app.debug(TAG, "VIEWPORT" +
-                "\n\tGameViewport Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
-                "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
-                "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
+//        Gdx.app.debug(TAG, "VIEWPORT" +
+//                "\n\tGameViewport Width/Height: " + viewport.getScreenWidth() + "/" + viewport.getScreenHeight() +
+//                "\n\tWorld Width/Height: " + viewport.getWorldWidth() + "/" + viewport.getWorldHeight() +
+//                "\n\tVieport Left/Right: " + Constants.VIEWPORT_LEFT + "/" + Constants.VIEWPORT_RIGHT);
     }
 
     @Override
@@ -156,7 +129,6 @@ public class LoadingScreen extends AbstractGameScreen {
     public void hide() {
         // Dispose()
         batch.dispose();
-        manager.dispose();
     }
 
 }

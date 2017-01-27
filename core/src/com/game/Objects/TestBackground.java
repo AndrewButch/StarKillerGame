@@ -1,6 +1,7 @@
 package com.game.Objects;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -21,6 +22,7 @@ public class TestBackground extends Sprite{
     private HashMap<String, Texture> textures;
 
 
+
     public TestBackground() {
         super();
         textures = new HashMap<String, Texture>();
@@ -29,10 +31,12 @@ public class TestBackground extends Sprite{
         textures.put("clouds3", Assets.instance.bg3.getTexture());
         textures.put("smallStars", Assets.instance.smallStars.getTexture());
         textures.put("bigStars",  Assets.instance.bigStars.getTexture());
+
     }
 
     @Override
     public void draw(Batch batch) {
+
         batchDraw(batch, Assets.instance.bg1, offsetClouds );
         batchDraw(batch, Assets.instance.bg2, Constants.VIEWPORT_HEIGHT + offsetClouds );
         batchDraw(batch, Assets.instance.bg3, 2 * Constants.VIEWPORT_HEIGHT + offsetClouds );
@@ -68,5 +72,6 @@ public class TestBackground extends Sprite{
                 region.getRegionWidth(), region.getRegionHeight(),
                 false, false);
     }
+
 
 }
