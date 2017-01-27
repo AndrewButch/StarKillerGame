@@ -28,10 +28,17 @@ public class Assets implements Disposable, AssetErrorListener {
     public AtlasRegion bigStars;
     public AssetFonts fonts;
 
+    public AtlasRegion btnMenuPlayUp;
+    public AtlasRegion btnMenuPlayDown;
+    public AtlasRegion btnMenuOptionsUp;
+    public AtlasRegion btnMenuOptionsDown;
+    public AtlasRegion imgMenuLogo;
+    public AtlasRegion imgMenuBackground;
+
     private Assets() {
     }
 
-    public void loadMenuAssets(AssetManager assetManager) {
+    public void loadMenuAssets() {
         Gdx.app.debug(TAG, "Loading menu assets");
 
         assetManager.load(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
@@ -107,10 +114,26 @@ public class Assets implements Disposable, AssetErrorListener {
 
             Gdx.app.debug(TAG, "Atlas not loaded");
         }
+    }
 
-
-
-
+    public void initMenuTextures() {
+        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
+        for (String str : assetManager.getAssetNames()) {
+            Gdx.app.debug(TAG, "asset: " + str);
+        }
+        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
+        for(Texture texture : atlas.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+        for(AtlasRegion regions : atlas.getRegions()) {
+            Gdx.app.debug(TAG, "asset: " + regions.name);
+        }
+        btnMenuPlayUp = atlas.findRegion("btn_play_up");
+        btnMenuPlayDown = atlas.findRegion("btn_play_down");
+        btnMenuOptionsUp = atlas.findRegion("btn_options_up");
+        btnMenuOptionsDown = atlas.findRegion("btn_options_down");
+        imgMenuLogo = atlas.findRegion("menu_logo");
+        imgMenuBackground = atlas.findRegion("menu_background");;
     }
 
     @Override
