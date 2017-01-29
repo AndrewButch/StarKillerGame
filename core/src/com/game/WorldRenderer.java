@@ -25,7 +25,6 @@ public class WorldRenderer implements Disposable{
     private DebugRenderer debugRenderer;
 
 
-
     public WorldRenderer(WorldController controller) {
         this.controller = controller;
         init();
@@ -144,6 +143,7 @@ public class WorldRenderer implements Disposable{
     public void dispose() {
         batch.dispose();
         debugRenderer.dispose();
+
 
     }
 

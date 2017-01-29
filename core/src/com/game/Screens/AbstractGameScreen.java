@@ -27,7 +27,6 @@ public abstract class AbstractGameScreen implements Screen{
 
     @Override
     public  void resume() {
-       // game.setScreen(new LoadingScreen(game));
     }
 
     @Override

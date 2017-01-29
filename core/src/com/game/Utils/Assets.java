@@ -19,6 +19,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
 
+    // Game Assets
     public AtlasRegion player;
     public AtlasRegion shoot;
     public AtlasRegion bg1;
@@ -27,7 +28,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AtlasRegion smallStars;
     public AtlasRegion bigStars;
     public AssetFonts fonts;
-
+    // Menu Assets
     public AtlasRegion btnMenuPlayUp;
     public AtlasRegion btnMenuPlayDown;
     public AtlasRegion btnMenuOptionsUp;
@@ -51,7 +52,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public void loadBars() {
         Gdx.app.debug(TAG, "Loading Bars assets");
-        //assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
+        assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         assetManager.load("background.png", Texture.class);
         assetManager.load("logo.png", Texture.class);
         assetManager.load("progress_bar.png", Texture.class);
@@ -88,52 +89,44 @@ public class Assets implements Disposable, AssetErrorListener {
     }
     // init textures after loading game assets
     public void initGameTextures(){
-        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
-        for (String str : assetManager.getAssetNames()) {
-            Gdx.app.debug(TAG, "asset: " + str);
-        }
+        Gdx.app.debug(TAG, "initGameTextures");
 
-        if(assetManager.isLoaded(Constants.TEXTURE_ATLAS_GAME)) {
-            TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
-            for(Texture texture : atlas.getTextures()) {
-                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-            }
-        Gdx.app.debug(TAG, "# Sprites from Game atlas loaded: " + atlas.getRegions().size);
+        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
+        for(Texture texture : atlas.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+        Gdx.app.debug("initGameTextures", "# Sprites from Game atlas: " + atlas.getRegions().size);
         for(AtlasRegion regions : atlas.getRegions()) {
-            Gdx.app.debug(TAG, "asset: " + regions.name);
+            Gdx.app.debug("initGameTextures", "" + regions.name);
         }
-            player = atlas.findRegion("SpaceShip");
-            shoot = atlas.findRegion("star");
-            bg1 = atlas.findRegion("clouds1");
-            bg2 = atlas.findRegion("clouds2");
-            bg3 = atlas.findRegion("clouds3");
-            smallStars = atlas.findRegion("smallStars");
-            bigStars = atlas.findRegion("bigStars");
-            fonts = new AssetFonts();
-        } else{
+        player = atlas.findRegion("SpaceShip");
+        shoot = atlas.findRegion("star");
+        bg1 = atlas.findRegion("clouds1");
+        bg2 = atlas.findRegion("clouds2");
+        bg3 = atlas.findRegion("clouds3");
+        smallStars = atlas.findRegion("smallStars");
+        bigStars = atlas.findRegion("bigStars");
+        fonts = new AssetFonts();
 
-            Gdx.app.debug(TAG, "Atlas not loaded");
-        }
     }
 
     public void initMenuTextures() {
-        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
-        for (String str : assetManager.getAssetNames()) {
-            Gdx.app.debug(TAG, "asset: " + str);
-        }
+        Gdx.app.debug(TAG, "initMenuTextures");
+
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_MENU, TextureAtlas.class);
         for(Texture texture : atlas.getTextures()) {
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
+        Gdx.app.debug("initGameTextures", "# Sprites from Menu atlas: " + atlas.getRegions().size);
         for(AtlasRegion regions : atlas.getRegions()) {
-            Gdx.app.debug(TAG, "asset: " + regions.name);
+            Gdx.app.debug("initMenuTextures", "" + regions.name);
         }
         btnMenuPlayUp = atlas.findRegion("btn_play_up");
         btnMenuPlayDown = atlas.findRegion("btn_play_down");
         btnMenuOptionsUp = atlas.findRegion("btn_options_up");
         btnMenuOptionsDown = atlas.findRegion("btn_options_down");
         imgMenuLogo = atlas.findRegion("menu_logo");
-        imgMenuBackground = atlas.findRegion("menu_background");;
+        imgMenuBackground = atlas.findRegion("menu_background");
     }
 
     @Override
