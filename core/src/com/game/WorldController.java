@@ -29,7 +29,6 @@ public class WorldController extends InputAdapter implements Disposable{
     private float changeLevel = 0;
     Player ship;
     TestBackground testBG;
-    private ResolutionChanger resolutionChanger;
     LinkedList<Enemy> enemies;
     LinkedList<Shoot> shoots;
     private EnemyPool enemyPool;
@@ -47,7 +46,6 @@ public class WorldController extends InputAdapter implements Disposable{
     }
 
     private void init(){
-        resolutionChanger = new ResolutionChanger();
         levelChange = true;
         //player
         ship = new Player(
@@ -206,8 +204,7 @@ public class WorldController extends InputAdapter implements Disposable{
             }
         }
         if(keycode == Keys.R) {
-            Vector2 v = resolutionChanger.next();
-            Gdx.graphics.setWindowedMode((int)v.x, (int)v.y);
+            ResolutionChanger.instance.changeResolution();
         }
         return true;
     }

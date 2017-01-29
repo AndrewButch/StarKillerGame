@@ -16,11 +16,11 @@ public class DesktopLauncher {
 			TexturePacker.process( "InputMenu", "OutputMenu", "atlas.atlas");
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1080/2;
-		config.height = 1920/2;
+		config.width = 1080 / 2;
+		config.height = 1920 / 2;
 		config.useGL30 = false;
-		//config.width = 1440/2;
-		//config.height = 1920/2;
+//		config.width = 1440/2;
+//		config.height = 1920/2;
 		new LwjglApplication(new Main(), config);
 
 	}

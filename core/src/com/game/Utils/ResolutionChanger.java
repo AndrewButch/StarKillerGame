@@ -17,6 +17,7 @@ public class ResolutionChanger {
     private static final String TAG = ResolutionChanger.class.getSimpleName();
     private static int id = 1;
     ArrayMap<String, Vector2> res;
+    public static final ResolutionChanger instance = new ResolutionChanger();
 
 
     public ResolutionChanger() {
@@ -28,12 +29,13 @@ public class ResolutionChanger {
         res.put("4:3",new Vector2(1440, 1920));
     }
 
-    public Vector2 next() {
+    public void changeResolution() {
 
        Vector2 resol = new Vector2( res.getValueAt(id));
         Gdx.app.debug(TAG, res.getKeyAt(id) + " (" + (int)resol.x + "/" + (int)resol.y + ")");
         id = (id + 1) % res.size;
         resol.scl(0.5f);
-        return resol;
+        Gdx.graphics.setWindowedMode((int)resol.x, (int)resol.y);
+
     }
 }

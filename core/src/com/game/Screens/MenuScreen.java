@@ -4,30 +4,39 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.Constants;
 import com.game.Utils.Assets;
+import com.game.Utils.ResolutionChanger;
 
 
 public class MenuScreen extends AbstractGameScreen {
     private static final String TAG = MenuScreen.class.getSimpleName();
 
     private Stage stage;
+    private Table table;
     private Image imgLogo;
-    private Image imgBackground;
-    private Button btnMenuPlay;
-    private Button btnMenuOptions;
+    private ImageButton btnMenuPlay;
+    private ImageButton btnMenuOptions;
 
-    //debug
-    private final float DEBUG_REBUILD_INTERVAL = 5.0f;
-    private boolean debugEnable = false;
-    private float debugRebuildStage;
+    private Viewport viewport;
+    private SpriteBatch batch;
+
+
 
 
     public MenuScreen(Game game) {
@@ -37,66 +46,90 @@ public class MenuScreen extends AbstractGameScreen {
     @Override
     public void show() {
         //Create
-        stage = new Stage(new FillViewport(Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX));
+        viewport = new FillViewport(1440 * 0.5f, 1920 * 0.5f);
+        //viewport = new FillViewport(Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX);
+        batch = new SpriteBatch();
+        stage = new Stage(viewport, batch);
         Gdx.input.setInputProcessor(stage);
+
         Assets.instance.loadMenuAssets();
         Assets.instance.initMenuTextures();
+
+        //btn play
+        ImageButton.ImageButtonStyle ibs = new ImageButton.ImageButtonStyle();
+        ibs.imageUp = new TextureRegionDrawable(Assets.instance.btnMenuPlayUp);
+        ibs.imageDown = new TextureRegionDrawable(Assets.instance.btnMenuPlayDown);
+        btnMenuPlay = new ImageButton(ibs);
+        btnMenuPlay.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen( new LoadingScreen(game));
+            }
+        });
+        // options button
+        ImageButton.ImageButtonStyle ibs1 = new ImageButton.ImageButtonStyle();
+        ibs1.imageUp = new TextureRegionDrawable(Assets.instance.btnMenuOptionsUp);
+        ibs1.imageDown = new TextureRegionDrawable(Assets.instance.btnMenuOptionsDown);
+        btnMenuOptions = new ImageButton(ibs1);
+        btnMenuOptions.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ResolutionChanger.instance.changeResolution();
+
+            }
+        });
+        //logo
+        imgLogo= new Image(Assets.instance.imgMenuLogo);
+
+        // Table
+        table = new Table();
+        //table.debug(); //enable debug
+
         rebuildStage();
     }
 
     private void rebuildStage() {
         stage.clear();
 
-        //build all layers
-        Table layerBackground = buildBackgroundLayer();
-        Table layerLogos = buildLogosLayer();
-        Table layerControls = buildControlsLayer();
-        Stack stack = new Stack();
-        stage.addActor(stack);
-        stack.setSize(Constants.VIEWPORT_GUI_LEFT, Constants.VIEWPORT_GUI_RIGHT);
-        stack.addActor(layerBackground);
-        stack.addActor(layerLogos);
-        stack.addActor(layerControls);
+        // Set table structure
+        table.row();
+        table.add(imgLogo).padBottom(100).padTop(100).expand();
+        table.row();
+        table.add(btnMenuPlay).expand();
+        table.row();
+        table.add(btnMenuOptions).padBottom(200).expand();
+        table.setFillParent(true);
+        table.pack();
+        table.getColor().a = 0f;
+        table.addAction(Actions.fadeIn(2f));
+
+        stage.addActor(table);
+
     }
 
-    private Table buildBackgroundLayer() {
-        Table layer = new Table();
-
-        return layer;
-    }
-
-    private Table buildControlsLayer() {
-        Table layer = new Table();
-        return layer;
-    }
-
-    private Table buildLogosLayer() {
-        Table layer = new Table();
-        return layer;
-    }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (debugEnable) {
-            debugRebuildStage -= delta;
-            if(debugRebuildStage <= 0) {
-                debugRebuildStage = DEBUG_REBUILD_INTERVAL;
-                rebuildStage();
-            }
-        }
-
+        batch.begin();
+        batch.draw(Assets.instance.imgMenuBackground.getTexture(),
+                0, 0,
+                0, 0,
+                1440 * 0.5f, 1920 * 0.5f,
+                1, 1,
+                0,
+                Assets.instance.imgMenuBackground.getRegionX(), Assets.instance.imgMenuBackground.getRegionY(),
+                Assets.instance.imgMenuBackground.getRegionWidth(), Assets.instance.imgMenuBackground.getRegionHeight(),
+                false, false);
+        batch.end();
         stage.act(delta);
         stage.draw();
-        if(Gdx.input.isTouched()) {
-            game.setScreen(new LoadingScreen(game));
-        }
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+        stage.getViewport().update(width, height, true);
         Gdx.app.debug(TAG, "Stage Viewport: " +
                 stage.getViewport().getScreenWidth() + "/" + stage.getViewport().getScreenHeight());
     }
@@ -111,4 +144,5 @@ public class MenuScreen extends AbstractGameScreen {
         // Dispose
         stage.dispose();
     }
+
 }
