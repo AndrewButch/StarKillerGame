@@ -1,0 +1,16 @@
+Enemies:
+Light(l): 1 live, high speed
+Average(m): 2 lives, medium speed,
+Heavy(h): 5 lives, low speed
+Boss: 20 lives, speed medium <- ->
+
+1 lvl - 20L
+2 lvl - 25L + 5M = 30
+3 lvl - 30L + 10M = 40
+4 lvl - 20L + 15M = 35
+5 lvl - 20L + 15M + 5H = 40
+6 lvl - 15L + 15M + 10H = 40
+7 lvl - 15L + 10M + 10H = 40
+8 lvl - 15L + 15M + 15H = 45
+9 lvl - 15L + 20M + 15H = 50
+10 lvl - 15L + 15M + 20H + BOSS = 51
