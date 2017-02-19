@@ -1,20 +1,27 @@
 package com.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.game.Objects.Player;
 import com.game.Utils.Assets;
 import com.game.Utils.DebugRenderer;
+import com.game.Utils.ResolutionChanger;
 
-public class WorldRenderer implements Disposable{
+public class WorldRenderer extends InputAdapter implements Disposable{
     private static final String TAG = WorldRenderer.class.getSimpleName();
     private OrthographicCamera camera;
     private OrthographicCamera cameraGUI;
@@ -23,11 +30,13 @@ public class WorldRenderer implements Disposable{
     private SpriteBatch batch;
     private WorldController controller;
     private DebugRenderer debugRenderer;
+    private Vector2 touchPos;
 
 
     public WorldRenderer(WorldController controller) {
         this.controller = controller;
         init();
+        Gdx.input.setInputProcessor(this);
     }
 
     private void init(){
@@ -45,6 +54,7 @@ public class WorldRenderer implements Disposable{
         batch = new SpriteBatch();
 
         debugRenderer = new DebugRenderer(camera.combined);
+        touchPos = new Vector2();
 
     }
 
@@ -82,6 +92,8 @@ public class WorldRenderer implements Disposable{
 //                0,
 //                0, 0,
 //                texture.getWidth(), texture.getHeight(), false, false);
+        touchControl(Gdx.graphics.getDeltaTime());
+
         controller.testBG.draw(batch);
         controller.ship.draw(batch);
         for(int i = 0; i < controller.enemies.size(); i++) {
@@ -90,6 +102,7 @@ public class WorldRenderer implements Disposable{
         for(int i = 0; i < controller.shoots.size(); i++) {
             controller.shoots.get(i).draw(batch);
         }
+        controller.joystick.draw(batch);
         batch.end();
     }
     private void renderGUI(SpriteBatch batch) {
@@ -138,14 +151,56 @@ public class WorldRenderer implements Disposable{
         wave.draw(batch,  "Wave " + controller.currentLevel , x, y, 0, Align.center, false);
     }
 
-
     @Override
     public void dispose() {
         batch.dispose();
         debugRenderer.dispose();
-
-
     }
 
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        touchPos.set(screenX, screenY);
+        viewport.unproject(touchPos);
+        return controller.touchDown(touchPos.x, touchPos.y, pointer, button);
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        return controller.touchUp(screenX, screenY, pointer, button);
+    }
+
+    public void touchControl(float delta) {
+        if(Gdx.input.isTouched() && controller.joystick.isMoving()) {
+            //получаем величину сигнала от контроллера нормированную (от 0 до 1)
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+            viewport.unproject(touchPos);
+            Gdx.app.debug(TAG, "\n\tTouch" + touchPos + "");
+            Vector2 translate = controller.joystick.move(touchPos.x, touchPos.y);
+            // умножаем на максимальную скорость значение скорости получаем Speed/sec
+            translate.scl(Player.VELOCITY * delta);
+            //Gdx.app.debug("Test", "\n\tCurrent pos" + currentPos + "");
+            controller.ship.update(translate.x, translate.y);
+        }
+
+    }
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.G) {
+            if(DebugRenderer.isGridEnable()){
+                DebugRenderer.enableGrid(false);
+            } else {
+                DebugRenderer.enableGrid(true);
+            }
+        }
+        if(keycode == Input.Keys.R) {
+            ResolutionChanger.instance.changeResolution();
+        }
+        return true;
+    }
 
 }

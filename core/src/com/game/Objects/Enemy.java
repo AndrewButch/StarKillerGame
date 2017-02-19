@@ -43,9 +43,7 @@ public class Enemy extends AbstractGameObject implements Pool.Poolable {
         this.velocity = new Vector2();
         setRandomVelocity();
         incrementId();
-        this.setColor(MathUtils.random(0.0f, 1.0f),
-                MathUtils.random(0.0f, 1.0f),
-                MathUtils.random(0.0f, 1.0f), 1);
+        this.setColor(1, 0, 0, 1);
 
 //        Gdx.app.debug(  "Enemy", "#" + this.enemyId + " position(" + getX() + "/" + getY() + ")" +
 //                        "\tVelocity:(" + velocity.x + "/" + velocity.y + ")" +

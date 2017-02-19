@@ -34,7 +34,7 @@ public class Player {
         shootPool = new ShootPool(10, 20);
     }
 
-    public void update(float axisY, float axisX){
+    public void update(float axisX, float axisY){
 
         if (axisX != 0) {
             sprite.translateX(axisX);

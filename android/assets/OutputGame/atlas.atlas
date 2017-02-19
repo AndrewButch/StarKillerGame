@@ -39,6 +39,20 @@ clouds3
   orig: 360, 480
   offset: 0, 0
   index: -1
+joystick
+  rotate: false
+  xy: 732, 331
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+joystickBG
+  rotate: false
+  xy: 732, 431
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 star
   rotate: false
   xy: 4, 4

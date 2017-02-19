@@ -28,6 +28,8 @@ public class Assets implements Disposable, AssetErrorListener {
     public AtlasRegion smallStars;
     public AtlasRegion bigStars;
     public AssetFonts fonts;
+    public AtlasRegion joystickBG;
+    public AtlasRegion joystick;
     // Menu Assets
     public AtlasRegion btnMenuPlayUp;
     public AtlasRegion btnMenuPlayDown;
@@ -106,6 +108,8 @@ public class Assets implements Disposable, AssetErrorListener {
         bg3 = atlas.findRegion("clouds3");
         smallStars = atlas.findRegion("smallStars");
         bigStars = atlas.findRegion("bigStars");
+        joystick = atlas.findRegion("joystick");
+        joystickBG = atlas.findRegion("joystickBG");
         fonts = new AssetFonts();
 
     }

@@ -101,7 +101,7 @@ public class MenuScreen extends AbstractGameScreen {
         table.setFillParent(true);
         table.pack();
         table.getColor().a = 0f;
-        table.addAction(Actions.fadeIn(2f));
+        table.addAction(Actions.fadeIn(1f));
 
         stage.addActor(table);
 
