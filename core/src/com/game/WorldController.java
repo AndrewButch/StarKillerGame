@@ -27,14 +27,11 @@ public class WorldController implements Disposable{
 
     private static final String TAG = WorldController.class.getSimpleName();
     public static final float LEVEL_CHANGING_TIME = 2.0f;
+    public static final float NEW_ENEMY_DELAY = 0.1f;
     private float currentEnemyTime = 0;
     private float currentShootTime = 0;
     private float currentLevelTime = 0;
     private float changeLevel = 0;
-
-    Controller joystick;
-
-    private Viewport viewport; // для unproject
 
     Player ship;
     TestBackground testBG;
@@ -55,10 +52,6 @@ public class WorldController implements Disposable{
 
     private void init(){
         levelChange = true;
-        // joystick
-        joystick = new Controller(Constants.VIEWPORT_RIGHT - 1.0f, 1.0f, 2.0f, true);
-        viewport = new FillViewport(Constants.VIEWPORT_WIDTH_MAX, Constants.VIEWPORT_HEIGHT_MAX);
-
 
         //player
         ship = new Player(
@@ -108,10 +101,9 @@ public class WorldController implements Disposable{
         }
 
         //add new enemy
-        float newEnemyTime = 0.5f;
         if(!levelChange) {
             currentLevelTime += delta;
-            if (currentEnemyTime >= newEnemyTime) {
+            if (currentEnemyTime >= NEW_ENEMY_DELAY) {
                 currentEnemyTime = 0.0f;
                 enemies.addLast(enemyPool.obtain());
             }
@@ -185,13 +177,6 @@ public class WorldController implements Disposable{
 //        }
     }
 
-
-
-    @Override
-    public void dispose() {
-
-    }
-
     private void shoot() {
         if(currentShootTime >= Player.SHOOT_RELOAD) {
             currentShootTime = 0.0f;
@@ -204,22 +189,8 @@ public class WorldController implements Disposable{
         }
     }
 
-    public boolean touchDown(float screenX, float screenY, int pointer, int button) {
-        Gdx.app.debug(TAG, "\n\tBOX " + joystick.getBoundingBox());
-        Gdx.app.debug(TAG, "\n\tTouch " + screenX + "/" + screenY);
+    @Override
+    public void dispose() {
 
-        joystick.setControllerCenter(screenX, screenY);
-        joystick.setMoving(true);
-        joystick.setVisible(true);
-        return true;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (joystick.isMoving()){
-            joystick.reset();
-            joystick.setMoving(false);
-            joystick.setVisible(false);
-        }
-        return true;
     }
 }

@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.Objects.Player;
 import com.game.Utils.Assets;
+import com.game.Utils.Controller;
 import com.game.Utils.DebugRenderer;
 import com.game.Utils.ResolutionChanger;
 
@@ -31,6 +32,7 @@ public class WorldRenderer extends InputAdapter implements Disposable{
     private WorldController controller;
     private DebugRenderer debugRenderer;
     private Vector2 touchPos;
+    private Controller joystick;
 
 
     public WorldRenderer(WorldController controller) {
@@ -55,6 +57,7 @@ public class WorldRenderer extends InputAdapter implements Disposable{
 
         debugRenderer = new DebugRenderer(camera.combined);
         touchPos = new Vector2();
+        joystick = new Controller(Constants.VIEWPORT_RIGHT - 1.0f, 1.0f, 2.0f, true);
 
     }
 
@@ -102,7 +105,7 @@ public class WorldRenderer extends InputAdapter implements Disposable{
         for(int i = 0; i < controller.shoots.size(); i++) {
             controller.shoots.get(i).draw(batch);
         }
-        controller.joystick.draw(batch);
+        joystick.draw(batch);
         batch.end();
     }
     private void renderGUI(SpriteBatch batch) {
@@ -157,33 +160,39 @@ public class WorldRenderer extends InputAdapter implements Disposable{
         debugRenderer.dispose();
     }
 
-    public Viewport getViewport() {
-        return viewport;
-    }
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchPos.set(screenX, screenY);
         viewport.unproject(touchPos);
-        return controller.touchDown(touchPos.x, touchPos.y, pointer, button);
+        Gdx.app.debug(TAG, "\n\tBOX " + joystick.getBoundingBox());
+        Gdx.app.debug(TAG, "\n\tTouch " + screenX + "/" + screenY);
+
+        joystick.setControllerCenter(touchPos.x, touchPos.y);
+        joystick.setMoving(true);
+        joystick.setVisible(true);
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        return controller.touchUp(screenX, screenY, pointer, button);
+        if (joystick.isMoving()){
+            joystick.reset();
+            joystick.setMoving(false);
+            joystick.setVisible(false);
+        }
+        return true;
     }
 
     public void touchControl(float delta) {
-        if(Gdx.input.isTouched() && controller.joystick.isMoving()) {
-            //получаем величину сигнала от контроллера нормированную (от 0 до 1)
+        if(Gdx.input.isTouched() && joystick.isMoving()) {
+            // получаем величину сигнала от контроллера нормированную (от 0 до 1)
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             viewport.unproject(touchPos);
-            Gdx.app.debug(TAG, "\n\tTouch" + touchPos + "");
-            Vector2 translate = controller.joystick.move(touchPos.x, touchPos.y);
-            // умножаем на максимальную скорость значение скорости получаем Speed/sec
+            // Gdx.app.debug(TAG, "\n\tTouch" + touchPos + "");
+            Vector2 translate = joystick.move(touchPos.x, touchPos.y);
+            // умножаем на максимальную скорость значение скорости объекта получаем Speed/sec
             translate.scl(Player.VELOCITY * delta);
-            //Gdx.app.debug("Test", "\n\tCurrent pos" + currentPos + "");
+            // Gdx.app.debug("Test", "\n\tCurrent pos" + currentPos + "");
             controller.ship.update(translate.x, translate.y);
         }
 

@@ -103,7 +103,7 @@ public class Controller {
         //Gdx.app.debug("Controller", "B - A" + translate + "" );
         translate.scl(1 / (maxSignal)); //нормализация значения + выходной сигнал 1 / длина вектора
 
-        Gdx.app.debug("Controller", "Output" + translate + "" );
+        //Gdx.app.debug("Controller", "Output" + translate + "" );
 
         return translate;
     }
